@@ -1,0 +1,7 @@
+.superpowers/
+work/
+.worktrees/
+node_modules/
+dist/
+.next/
+.wrangler/
