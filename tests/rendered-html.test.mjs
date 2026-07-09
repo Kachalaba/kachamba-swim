@@ -18,7 +18,11 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.equal(response.status, 200);
 
   const html = await response.text();
-  assert.match(html, /Почніть плавати красиво\./);
+  assert.match(html, /Персональне онлайн-ведення з плавання/);
+  assert.match(html, /Від \$100\/місяць/);
+  assert.match(html, /Для дорослих, які починають/);
+  assert.match(html, /Для триатлетів-любителів/);
+  assert.match(html, /До 8–10 спортсменів одночасно/);
   assert.match(html, /kachamba_swim/);
   assert.match(html, /lang="uk"/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/);
