@@ -19,6 +19,7 @@ The chosen direction is **Deep Water**: an Apple-inspired boutique-luxury treatm
 - Atmosphere: sparse layout, generous whitespace, fine hairlines, translucent glass surfaces, restrained water-light movement.
 - Imagery: selected genuine photos or clips from the supplied Instagram export; no stock imagery, fake testimonials, invented credentials, or unsupported numerical claims.
 - Tone: controlled, calm, precise, supportive.
+- Copy: specific and human rather than promotional-template language. It may name real beginner moments (the first calm exhale, entering deep water, completing a length without panic); it must avoid generic fitness slogans, exaggerated promises, and interchangeable phrases such as "unlock your potential" or "swim like a pro".
 
 ## Page structure
 
