@@ -5,18 +5,18 @@ import "./globals.css";
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: "Микита Качалаба — плавання для дорослих",
-  description: "Плавання для дорослих у Києві та онлайн. Спокійний шлях до впевненості у воді з Микитою Качалабою.",
+  title: "Mykyta Kachalaba — Personal Swim Coaching",
+  description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
   openGraph: {
-    title: "Микита Качалаба — плавання для дорослих",
-    description: "Почніть плавати красиво.",
+    title: "Mykyta Kachalaba — Personal Swim Coaching",
+    description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Почніть плавати красиво." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mykyta Kachalaba — Personal Swim Coaching" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Микита Качалаба — плавання для дорослих",
-    description: "Почніть плавати красиво.",
+    title: "Mykyta Kachalaba — Personal Swim Coaching",
+    description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
     images: ["/og.png"],
   },
 };
