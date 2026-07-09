@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Language = "uk" | "en";
 
@@ -9,6 +9,7 @@ const instagramUrl = "https://www.instagram.com/kachamba_swim/";
 const copy = {
   uk: {
     nav: ["Кому підійде", "Система", "Вартість", "Про тренера"],
+    languageLabel: "Мова",
     label: "Онлайн-ведення з плавання · Україна та світ",
     headline: "Плавання, яке підлаштоване під ваше життя.",
     offer: "Персональне онлайн-ведення з плавання",
@@ -22,6 +23,13 @@ const copy = {
       ["Для дорослих, які починають", "Щоб вода перестала бути напругою, а техніка — чужою мовою."],
       ["Для триатлетів-любителів", "Щоб плисти економніше, впевненіше й берегти ресурс для решти дистанції."],
     ],
+    guidedLabel: "Ведення замість здогадок",
+    guidedTitle: "Не вгадуєте, що змінити після тренування — рухаєтесь за зрозумілим циклом.",
+    guidedText:
+      "Випадкові тренування залишають вас наодинці з питанням, що справді працює. У веденні кожне наступне рішення спирається на те, що ви зробили й побачили у воді.",
+    guidedGuessing: ["Навмання", "Ви самі вирішуєте, що залишити, а що змінити після кожної сесії."],
+    guidedSupport: ["З веденням", "План і наступний крок уточнюються навколо вашої реальної роботи, а не припущень."],
+    guidedLoop: "План → дія → відеозворотний зв’язок → корекція → безперервність",
     systemLabel: "Як працює ведення",
     systemTitle: "План, який живе разом із вашим графіком.",
     systemText:
@@ -47,6 +55,8 @@ const copy = {
       ["01", "Коротко знайомимось", "Ви описуєте ціль, досвід у воді, доступ до басейну й звичний ритм тижня."],
       ["02", "Визначаємо старт", "Дивимось на техніку у відео або домовляємось, як її зняти без зайвого стресу."],
       ["03", "Складаємо перший тиждень", "Ви отримуєте зрозумілий план і канал зв’язку для запитань по ходу."],
+      ["04", "Надсилаєте відео й отримуєте зворотний зв’язок", "Після перших тренувань дивимось, що вже спрацьовує і що варто підкоригувати."],
+      ["05", "Уточнюємо наступний блок", "Наступні заняття спираються на реальний досвід першого тижня, а не на припущення."],
     ],
     coachLabel: "Тренер",
     coachTitle: "Микита Качалаба",
@@ -59,6 +69,7 @@ const copy = {
   },
   en: {
     nav: ["Who it is for", "System", "Pricing", "About the coach"],
+    languageLabel: "Language",
     label: "Online swim coaching · Ukraine and worldwide",
     headline: "Swimming that adapts to your life.",
     offer: "Personal online swim coaching",
@@ -72,6 +83,13 @@ const copy = {
       ["For adults getting started", "So water stops feeling tense and technique stops sounding like a foreign language."],
       ["For amateur triathletes", "So you can swim more efficiently and confidently while saving energy for the rest of the race."],
     ],
+    guidedLabel: "Guidance instead of guessing",
+    guidedTitle: "You do not have to guess what to change after a session — you move through a clear loop.",
+    guidedText:
+      "Random workouts leave you alone with the question of what is actually working. In coaching, each next decision comes from what you did and saw in the water.",
+    guidedGuessing: ["Guessing alone", "You decide on your own what to keep and what to change after every session."],
+    guidedSupport: ["With guidance", "The plan and next step are refined around your real work, not assumptions."],
+    guidedLoop: "Plan → action → video feedback → adjustment → continuity",
     systemLabel: "How coaching works",
     systemTitle: "A plan that moves with your schedule.",
     systemText:
@@ -97,6 +115,8 @@ const copy = {
       ["01", "A short introduction", "You share your goal, water experience, pool access and usual weekly rhythm."],
       ["02", "We define your starting point", "We review your technique on video or agree on a simple, low-stress way to record it."],
       ["03", "We build your first week", "You receive a clear plan and a direct channel for questions as you go."],
+      ["04", "You send video and receive feedback", "After your first sessions, we look at what is already working and what is worth adjusting."],
+      ["05", "We refine the next block", "Your next sessions build on the real experience of the first week, not assumptions."],
     ],
     coachLabel: "Coach",
     coachTitle: "Mykyta Kachalaba",
@@ -113,8 +133,12 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
   const t = copy[language];
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   return (
-    <main className="site-shell">
+    <main className="site-shell" lang={language}>
       <header className="topbar">
         <a className="wordmark" href="#top" aria-label="Kachalaba Swim">
           KACHALABA<span>SWIM</span>
@@ -125,7 +149,7 @@ export default function Home() {
           <a href="#price">{t.nav[2]}</a>
           <a href="#coach">{t.nav[3]}</a>
         </nav>
-        <div className="language-switch" aria-label="Language">
+        <div className="language-switch" aria-label={t.languageLabel}>
           {(["uk", "en"] as Language[]).map((item) => (
             <button key={item} type="button" aria-pressed={language === item} onClick={() => setLanguage(item)}>
               {item.toUpperCase()}
@@ -158,6 +182,14 @@ export default function Home() {
       <section className="coaching-system section" id="system" aria-labelledby="system-title">
         <p className="section-count">02</p>
         <div className="section-heading"><p className="eyebrow">{t.systemLabel}</p><h2 id="system-title">{t.systemTitle}</h2><p>{t.systemText}</p></div>
+        <div className="guided-narrative" aria-label={t.guidedLabel}>
+          <div><p className="eyebrow">{t.guidedLabel}</p><h3>{t.guidedTitle}</h3><p>{t.guidedText}</p></div>
+          <div className="guided-contrast">
+            <article><p className="eyebrow">{t.guidedGuessing[0]}</p><p>{t.guidedGuessing[1]}</p></article>
+            <article><p className="eyebrow">{t.guidedSupport[0]}</p><p>{t.guidedSupport[1]}</p></article>
+          </div>
+          <p className="guided-loop">{t.guidedLoop}</p>
+        </div>
         <div className="system-grid">
           {t.system.map(([title, text], index) => <article className="system-card" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}
         </div>
