@@ -6,17 +6,17 @@ const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin", "cyrilli
 
 export const metadata: Metadata = {
   title: "Mykyta Kachalaba — Personal Swim Coaching",
-  description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
+  description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
   openGraph: {
     title: "Mykyta Kachalaba — Personal Swim Coaching",
-    description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
+    description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
     type: "website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mykyta Kachalaba — Personal Swim Coaching" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mykyta Kachalaba — Personal Swim Coaching",
-    description: "Personal online swimming coaching with individual plans, video analysis, chat and calls. From $100 per month.",
+    description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
     images: ["/og.png"],
   },
 };
