@@ -53,6 +53,10 @@ export function ProgressRail({ label, items, mode }: ProgressRailProps) {
       }
 
       if (mode === "method") {
+        if (!("IntersectionObserver" in window)) {
+          complete();
+          return;
+        }
         observer = new IntersectionObserver(
           ([entry]) => {
             if (!entry.isIntersecting) return;

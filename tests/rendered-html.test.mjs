@@ -42,7 +42,10 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /<h1[^>]*id="hero-title"[^>]*>[\s\S]*class="hero-title-filled"[\s\S]*class="hero-title-outline"[\s\S]*<\/h1>/);
   assert.match(html, /Плавання, яке[\s\S]*підлаштоване під ваше життя\./);
   assert.match(html, /PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE/);
+  assert.match(html, /Обговорити формат/);
+  assert.doesNotMatch(html, /Запитати про місце/);
   assert.match(html, /data-revealed="false"/);
+  assert.match(html, /data-active-route="0"/);
   assert.match(html, /data-progress-mode="method"/);
   assert.match(html, /data-progress-mode="coaching"/);
   assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);

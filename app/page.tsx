@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CinematicMedia } from "./components/CinematicMedia";
 import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
+import { RoutePair } from "./components/RoutePair";
 import { copy, instagramUrl, type Language } from "./site-copy";
 
 export default function Home() {
@@ -92,7 +93,7 @@ export default function Home() {
         <div className="documentary-rail" aria-label={t.documentaryLabel}>
           <p>{t.documentaryLabel}</p>
           <ul>
-            {t.proof.map((fact) => <li key={fact}>{fact}</li>)}
+            {t.documentaryNotes.map((note) => <li key={note}>{note}</li>)}
           </ul>
         </div>
       </section>
@@ -103,7 +104,7 @@ export default function Home() {
           <p className="eyebrow">{t.audienceLabel}</p>
           <h2 id="audiences-title">{t.audienceTitle}</h2>
         </Reveal>
-        <div className="route-pair">
+        <RoutePair>
           {t.audiences.map(([title, text], index) => (
             <Reveal className="route" delay={index * 90} key={title}>
               <span aria-hidden="true">0{index + 1}</span>
@@ -111,7 +112,7 @@ export default function Home() {
               <p>{text}</p>
             </Reveal>
           ))}
-        </div>
+        </RoutePair>
       </section>
 
       <section className="method scene" id="method" aria-labelledby="method-title">

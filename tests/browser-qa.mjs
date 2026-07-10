@@ -78,6 +78,7 @@ async function screenshot(path) {
 
 await send("Page.enable");
 await send("Runtime.enable");
+await send("Network.enable");
 
 await setViewport(1470, 705);
 await navigate();
@@ -90,6 +91,7 @@ const desktop = await evaluate(`(() => {
   return {
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     heroFits: required.every((rect) => rect.top >= hero.top - 1 && rect.bottom <= hero.bottom + 1),
+    routeActive: document.querySelector('.route-pair').dataset.activeRoute,
     videos: [...document.querySelectorAll('video')].map((video) => ({
       hasSrc: video.hasAttribute('src'), paused: video.paused, preload: video.preload,
     })),
@@ -97,6 +99,7 @@ const desktop = await evaluate(`(() => {
 })()`);
 assert.equal(desktop.overflow, 0);
 assert.equal(desktop.heroFits, true);
+assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
 await screenshot("/tmp/kachamba-desktop.png");
 
@@ -105,9 +108,11 @@ await delay(1_800);
 const method = await evaluate(`(() => ({
   complete: document.querySelector('[data-progress-mode="method"]').dataset.complete,
   routesRevealed: [...document.querySelectorAll('.route')].every((route) => route.dataset.revealed === 'true'),
+  routeActive: document.querySelector('.route-pair').dataset.activeRoute,
 }))()`);
 assert.equal(method.complete, "true");
 assert.equal(method.routesRevealed, true);
+assert.equal(method.routeActive, "1");
 await screenshot("/tmp/kachamba-method.png");
 
 await evaluate(`document.querySelector('[data-progress-mode="coaching"]').scrollIntoView({ block: 'center' }); true`);
@@ -131,6 +136,15 @@ await evaluate(`document.querySelector('#apply').scrollIntoView({ block: 'center
 await delay(500);
 assert.equal(await evaluate(`document.querySelector('#system video').paused`), true);
 
+await send("Network.clearBrowserCache");
+await send("Network.setBlockedURLs", { urls: ["*coaching-loop.mp4*"] });
+await navigate();
+await evaluate(`document.querySelector('#system').scrollIntoView({ block: 'center' }); true`);
+await delay(1_200);
+assert.equal(await evaluate(`document.querySelector('#system .cinematic-media img')?.getAttribute('src') === '/media/coaching-loop-poster.webp'`), true);
+await send("Network.setBlockedURLs", { urls: [] });
+await navigate();
+
 await evaluate(`([...document.querySelectorAll('.language-switch button')].find((button) => button.textContent === 'EN')).click(); true`);
 await delay(200);
 const english = await evaluate(`({
@@ -141,7 +155,12 @@ const english = await evaluate(`({
 })`);
 assert.deepEqual(english, { lang: "en", filled: "Swimming that", outline: "adapts to your life.", instagram: 4 });
 
-for (const [width, height, path] of [[390, 844, "/tmp/kachamba-mobile.png"], [390, 667, null]]) {
+for (const [width, height, path] of [
+  [1470, 768, null],
+  [1366, 768, null],
+  [390, 844, "/tmp/kachamba-mobile.png"],
+  [390, 667, null],
+]) {
   await setViewport(width, height);
   await navigate();
   const mobile = await evaluate(`(() => {

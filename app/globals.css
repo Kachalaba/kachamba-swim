@@ -281,7 +281,9 @@ button:focus-visible, a:focus-visible {
   z-index: -1;
   background: linear-gradient(0deg, rgba(6, 24, 29, .96), rgba(6, 24, 29, .08) 76%);
 }
-.route:hover::before, .route:focus-within::before, .route[data-revealed="true"]::before { filter: saturate(.7) contrast(1.08) brightness(.66); transform: scale(1.065); }
+.route:hover::before, .route:focus-within::before,
+.route-pair[data-active-route="0"] .route:first-child::before,
+.route-pair[data-active-route="1"] .route:nth-child(2)::before { filter: saturate(.7) contrast(1.08) brightness(.66); transform: scale(1.065); }
 .route > span { position: absolute; top: 28px; right: 28px; font-size: 10px; letter-spacing: .14em; }
 .route h3 { max-width: 610px; margin: 0; border-top: 1px solid rgba(217, 255, 248, .5); padding-top: 22px; font-size: clamp(36px, 5vw, 76px); font-weight: 470; letter-spacing: -.065em; line-height: .92; }
 .route p { max-width: 470px; margin: 18px 0 0; color: var(--mist); font-size: 15px; line-height: 1.5; }

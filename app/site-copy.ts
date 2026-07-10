@@ -12,11 +12,12 @@ export const copy = {
     offer: "Персональне онлайн-ведення з плавання",
     price: "Від $100/місяць",
     capacity: "До 8–10 спортсменів одночасно",
-    cta: "Запитати про місце",
+    cta: "Обговорити формат",
     heroText:
       "Для дорослих, які хочуть рухатися у воді впевненіше — від перших довжин до сильнішого плавального етапу в триатлоні.",
     proof: ["7 років методики", "5000+ годин персональної роботи"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
+    documentaryNotes: ["Дорослі новачки", "Триатлети-аматори"],
     audienceLabel: "Дві стартові точки",
     audienceTitle: "Один процес. Дві різні стартові точки.",
     audiences: [
@@ -93,11 +94,12 @@ export const copy = {
     offer: "Personal online swim coaching",
     price: "From $100/month",
     capacity: "Up to 8–10 athletes at a time",
-    cta: "Ask about a place",
+    cta: "Discuss the fit",
     heroText:
       "For adults who want to move through water with more confidence — from their first lengths to a stronger swim leg in triathlon.",
     proof: ["7 years of methodology", "5,000+ hours of personal coaching"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
+    documentaryNotes: ["Adult beginners", "Amateur triathletes"],
     audienceLabel: "Two starting points",
     audienceTitle: "One process. Two different starting points.",
     audiences: [
