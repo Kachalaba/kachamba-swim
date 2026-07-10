@@ -195,7 +195,7 @@ button:focus-visible, a:focus-visible {
   margin: 0;
   color: rgba(245, 240, 230, .22);
   -webkit-text-stroke: 1px rgba(245, 240, 230, .88);
-  font-size: clamp(66px, 8.5vw, 142px);
+  font-size: clamp(56px, min(8.5vw, 12.8vh), 142px);
   font-weight: 480;
   letter-spacing: -.08em;
   line-height: .82;
@@ -486,21 +486,6 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .coaching-loop-lead { grid-template-columns: 1fr .58fr; gap: 48px; }
   .first-week-list { grid-template-columns: repeat(3, 1fr); row-gap: 54px; }
   .documentary-gallery { grid-template-rows: repeat(2, minmax(220px, 40vw)); }
-}
-
-/* Wide laptop screens can be much shorter than their width suggests. */
-@media (min-width: 761px) and (max-height: 720px) {
-  .topbar { padding-top: 44px; padding-bottom: 44px; }
-  .cinema-hero-copy { bottom: 30px; }
-  .cinema-hero-copy .eyebrow { margin-bottom: 16px; }
-  .cinema-hero-copy h1 {
-    font-size: clamp(56px, min(7.2vw, 12.8vh), 104px);
-    line-height: .84;
-  }
-  .hero-offer { margin-top: 18px; }
-  .hero-intro { margin-top: 8px; margin-bottom: 14px; font-size: 14px; line-height: 1.42; }
-  .hero-facts { margin-bottom: 14px; }
-  .hero-facts p { padding: 7px 10px; }
 }
 
 @media (max-width: 760px) {
