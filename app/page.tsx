@@ -54,7 +54,7 @@ export default function Home() {
           <a href="#practice">{t.nav[3]}</a>
           <a href="#price">{t.nav[4]}</a>
         </nav>
-        <div className="language-switch" aria-label={t.languageLabel}>
+        <div className="language-switch" role="group" aria-label={t.languageLabel}>
           {(["uk", "en"] as Language[]).map((item) => (
             <button
               key={item}
