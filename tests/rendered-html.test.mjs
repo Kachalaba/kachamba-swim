@@ -36,6 +36,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /poster="\/media\/coaching-loop-poster\.webp"/);
   assert.match(html, /src="\/media\/coach-deck-loop\.mp4"/);
   assert.match(html, /poster="\/media\/coach-deck-poster\.webp"/);
+  assert.doesNotMatch(html, /<video\b[^>]*\bautoplay(?:=""|(?=[\s>]))/i);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];

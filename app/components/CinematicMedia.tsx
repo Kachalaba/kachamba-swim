@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type CinematicMediaProps = {
   videoSrc?: string;
@@ -19,16 +19,43 @@ export function CinematicMedia({
   caption,
   className = "",
 }: CinematicMediaProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const fallback = imageSrc ?? posterSrc;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !videoSrc || videoFailed) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPlayback = () => {
+      if (reducedMotion.matches) {
+        video.pause();
+        video.currentTime = 0;
+        video.load();
+        return;
+      }
+
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+
+    syncPlayback();
+    reducedMotion.addEventListener("change", syncPlayback);
+
+    return () => {
+      reducedMotion.removeEventListener("change", syncPlayback);
+      video.pause();
+    };
+  }, [videoFailed, videoSrc]);
 
   return (
     <figure className={`cinematic-media ${className}`.trim()}>
       {videoSrc && !videoFailed ? (
         <video
+          ref={videoRef}
           src={videoSrc}
           poster={posterSrc}
-          autoPlay
           muted
           loop
           playsInline
