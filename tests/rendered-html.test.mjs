@@ -32,11 +32,20 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /5000\+ годин персональної роботи/);
   assert.match(html, /Дихання → Техніка → Темп → Відновлення/);
   assert.match(html, /План → Дія → Відеорозбір → Корекція → Наступний блок/);
-  assert.match(html, /src="\/media\/coaching-loop\.mp4"/);
+  assert.match(html, /data-video-src="\/media\/coaching-loop\.mp4"/);
   assert.match(html, /poster="\/media\/coaching-loop-poster\.webp"/);
-  assert.match(html, /src="\/media\/coach-deck-loop\.mp4"/);
+  assert.match(html, /data-video-src="\/media\/coach-deck-loop\.mp4"/);
   assert.match(html, /poster="\/media\/coach-deck-poster\.webp"/);
+  assert.doesNotMatch(html, /<video\b[^>]*\ssrc="\/media\/(?:coaching-loop|coach-deck-loop)\.mp4"/i);
+  assert.equal((html.match(/<video\b[^>]*\bpreload="none"/gi) ?? []).length, 2);
   assert.doesNotMatch(html, /<video\b[^>]*\bautoplay(?:=""|(?=[\s>]))/i);
+  assert.match(html, /<h1[^>]*id="hero-title"[^>]*>[\s\S]*class="hero-title-filled"[\s\S]*class="hero-title-outline"[\s\S]*<\/h1>/);
+  assert.match(html, /Плавання, яке[\s\S]*підлаштоване під ваше життя\./);
+  assert.match(html, /PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE/);
+  assert.match(html, /data-revealed="false"/);
+  assert.match(html, /data-progress-mode="method"/);
+  assert.match(html, /data-progress-mode="coaching"/);
+  assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];

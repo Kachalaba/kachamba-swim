@@ -193,13 +193,20 @@ button:focus-visible, a:focus-visible {
 .cinema-hero-copy h1 {
   max-width: 800px;
   margin: 0;
-  color: rgba(245, 240, 230, .22);
-  -webkit-text-stroke: 1px rgba(245, 240, 230, .88);
+  color: var(--pearl);
   font-size: clamp(56px, min(8.5vw, 12.8vh), 142px);
   font-weight: 480;
   letter-spacing: -.08em;
   line-height: .82;
   text-wrap: balance;
+}
+.cinema-hero-copy h1 span { display: block; white-space: nowrap; }
+.hero-title-filled { color: var(--pearl); }
+.hero-title-outline {
+  color: rgba(245, 240, 230, .1);
+  -webkit-text-stroke: 1px rgba(245, 240, 230, .88);
+  font-size: .58em;
+  letter-spacing: -.06em;
 }
 .hero-offer {
   margin: 26px 0 0;
@@ -274,7 +281,7 @@ button:focus-visible, a:focus-visible {
   z-index: -1;
   background: linear-gradient(0deg, rgba(6, 24, 29, .96), rgba(6, 24, 29, .08) 76%);
 }
-.route:hover::before { filter: saturate(.7) contrast(1.08) brightness(.66); transform: scale(1.065); }
+.route:hover::before, .route:focus-within::before, .route[data-revealed="true"]::before { filter: saturate(.7) contrast(1.08) brightness(.66); transform: scale(1.065); }
 .route > span { position: absolute; top: 28px; right: 28px; font-size: 10px; letter-spacing: .14em; }
 .route h3 { max-width: 610px; margin: 0; border-top: 1px solid rgba(217, 255, 248, .5); padding-top: 22px; font-size: clamp(36px, 5vw, 76px); font-weight: 470; letter-spacing: -.065em; line-height: .92; }
 .route p { max-width: 470px; margin: 18px 0 0; color: var(--mist); font-size: 15px; line-height: 1.5; }
@@ -303,13 +310,17 @@ button:focus-visible, a:focus-visible {
   position: absolute;
   inset: 0;
   background: var(--aqua);
-  transform: scaleX(.08);
+  transform: scaleX(var(--rail-progress, 0));
   transform-origin: left;
+  transition: transform 1.55s var(--ease);
 }
-.method .progress-rail-line::after { animation: rail-draw 5.5s var(--ease) infinite alternate; }
+.coaching-loop .progress-rail-line::after { transition: none; }
 .progress-rail ol { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
 .method .progress-rail ol { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .progress-rail li { min-width: 0; padding-top: 30px; }
+.progress-rail li { transition: color .35s var(--ease), opacity .35s var(--ease); }
+.coaching-loop .progress-rail li { opacity: .42; }
+.coaching-loop .progress-rail li[data-active="true"] { color: var(--aqua); opacity: 1; }
 .progress-rail li > span { display: block; margin-bottom: 38px; color: currentColor; opacity: .48; font-size: 9px; letter-spacing: .14em; }
 .progress-rail strong { font-size: clamp(16px, 1.5vw, 22px); font-weight: 520; letter-spacing: -.04em; }
 .sequence-line { margin: 34px 0 0; color: currentColor; opacity: .58; font-size: 11px; letter-spacing: .07em; }
@@ -476,7 +487,6 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   50% { transform: translate3d(12%, 2%, 0); opacity: .52; }
 }
 @keyframes water-breathe { to { transform: scale(1.08); opacity: .58; } }
-@keyframes rail-draw { to { transform: scaleX(1); } }
 
 @media (max-width: 1080px) {
   .topbar { padding-inline: 52px; }
@@ -507,7 +517,8 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
     max-width: 390px;
   }
   .cinema-hero-copy .eyebrow { max-width: 280px; margin-bottom: 18px; }
-  .cinema-hero-copy h1 { max-width: 370px; font-size: clamp(48px, 14vw, 68px); line-height: .86; overflow-wrap: anywhere; }
+  .cinema-hero-copy h1 { max-width: 370px; font-size: clamp(48px, 14vw, 68px); line-height: .86; }
+  .hero-title-outline { font-size: .48em; }
   .hero-offer { margin-top: 18px; font-size: 14px; }
   .hero-intro { max-width: 350px; margin-block: 9px 16px; font-size: 13px; line-height: 1.42; }
   .hero-facts { gap: 6px; margin-bottom: 16px; }

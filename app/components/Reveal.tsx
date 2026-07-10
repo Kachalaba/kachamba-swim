@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
@@ -10,44 +10,55 @@ type RevealProps = {
 
 export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const element = ref.current;
-    if (
-      !element ||
-      !("IntersectionObserver" in window) ||
-      typeof element.animate !== "function" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
+    if (!element) return;
+
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const revealWithoutMotion = () => {
+      if (motionPreference.matches) setRevealed(true);
+    };
+
+    if (!("IntersectionObserver" in window) || motionPreference.matches) {
+      const frame = window.requestAnimationFrame(() => setRevealed(true));
+      return () => window.cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        element.animate(
-          [
-            { opacity: 0.78, transform: "translateY(24px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          {
-            duration: 760,
-            delay,
-            easing: "cubic-bezier(.22,1,.36,1)",
-            fill: "both",
-          },
-        );
+        setRevealed(true);
+        if (typeof element.animate === "function") {
+          element.animate(
+            [
+              { opacity: 0.78, transform: "translateY(24px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            {
+              duration: 760,
+              delay,
+              easing: "cubic-bezier(.22,1,.36,1)",
+              fill: "both",
+            },
+          );
+        }
         observer.disconnect();
       },
       { threshold: 0.18 },
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+    motionPreference.addEventListener("change", revealWithoutMotion);
+    return () => {
+      observer.disconnect();
+      motionPreference.removeEventListener("change", revealWithoutMotion);
+    };
   }, [delay]);
 
   return (
-    <div ref={ref} className={`reveal ${className}`.trim()}>
+    <div ref={ref} className={`reveal ${className}`.trim()} data-revealed={revealed}>
       {children}
     </div>
   );

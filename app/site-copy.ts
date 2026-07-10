@@ -8,7 +8,7 @@ export const copy = {
     primaryNavigation: "Основна навігація",
     languageLabel: "Мова",
     label: "Онлайн-ведення з плавання · Україна та світ",
-    headline: "Плавання, яке підлаштоване під ваше життя.",
+    headlineLines: ["Плавання, яке", "підлаштоване під ваше життя."],
     offer: "Персональне онлайн-ведення з плавання",
     price: "Від $100/місяць",
     capacity: "До 8–10 спортсменів одночасно",
@@ -16,7 +16,7 @@ export const copy = {
     heroText:
       "Для дорослих, які хочуть рухатися у воді впевненіше — від перших довжин до сильнішого плавального етапу в триатлоні.",
     proof: ["7 років методики", "5000+ годин персональної роботи"],
-    documentaryLabel: "Тренерська практика · Басейн · Відкрита вода",
+    documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     audienceLabel: "Дві стартові точки",
     audienceTitle: "Один процес. Дві різні стартові точки.",
     audiences: [
@@ -89,7 +89,7 @@ export const copy = {
     primaryNavigation: "Primary navigation",
     languageLabel: "Language",
     label: "Online swim coaching · Ukraine and worldwide",
-    headline: "Swimming that adapts to your life.",
+    headlineLines: ["Swimming that", "adapts to your life."],
     offer: "Personal online swim coaching",
     price: "From $100/month",
     capacity: "Up to 8–10 athletes at a time",
@@ -97,7 +97,7 @@ export const copy = {
     heroText:
       "For adults who want to move through water with more confidence — from their first lengths to a stronger swim leg in triathlon.",
     proof: ["7 years of methodology", "5,000+ hours of personal coaching"],
-    documentaryLabel: "Coaching practice · Pool · Open water",
+    documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     audienceLabel: "Two starting points",
     audienceTitle: "One process. Two different starting points.",
     audiences: [

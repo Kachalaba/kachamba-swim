@@ -75,7 +75,10 @@ export default function Home() {
         <div className="cinema-hero-shade" aria-hidden="true" />
         <Reveal className="cinema-hero-copy">
           <p className="eyebrow">{t.label}</p>
-          <h1 id="hero-title">{t.headline}</h1>
+          <h1 id="hero-title">
+            <span className="hero-title-filled">{t.headlineLines[0]}</span>
+            <span className="hero-title-outline">{t.headlineLines[1]}</span>
+          </h1>
           <p className="hero-offer">{t.offer}</p>
           <p className="hero-intro">{t.heroText}</p>
           <div className="hero-facts">
@@ -121,7 +124,7 @@ export default function Home() {
         <Reveal className="method-proof" delay={100}>
           {t.proof.map((fact) => <p key={fact}>{fact}</p>)}
         </Reveal>
-        <ProgressRail label={t.methodLine} items={t.methodSteps} />
+        <ProgressRail label={t.methodLine} items={t.methodSteps} mode="method" />
         <p className="sequence-line">{t.methodLine}</p>
       </section>
 
@@ -141,7 +144,7 @@ export default function Home() {
           />
         </div>
 
-        <ProgressRail label={t.loopLine} items={t.loopSteps} />
+        <ProgressRail label={t.loopLine} items={t.loopSteps} mode="coaching" />
         <p className="sequence-line">{t.loopLine}</p>
 
         <div className="guided-narrative" aria-label={t.guidedLabel}>

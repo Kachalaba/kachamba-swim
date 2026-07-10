@@ -19,47 +19,109 @@ export function CinematicMedia({
   caption,
   className = "",
 }: CinematicMediaProps) {
+  const figureRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const visibleRef = useRef(false);
   const fallback = imageSrc ?? posterSrc;
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !videoSrc || videoFailed) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncPlayback = () => {
-      if (reducedMotion.matches) {
-        video.pause();
-        video.currentTime = 0;
-        video.load();
-        return;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPreference = () => {
+      setReducedMotion(motionPreference.matches);
+      if (motionPreference.matches) {
+        setShouldLoad(false);
+        const video = videoRef.current;
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+          video.removeAttribute("src");
+          video.load();
+        }
       }
-
-      video.muted = true;
-      void video.play().catch(() => undefined);
     };
 
-    syncPlayback();
-    reducedMotion.addEventListener("change", syncPlayback);
+    syncPreference();
+    motionPreference.addEventListener("change", syncPreference);
+    return () => motionPreference.removeEventListener("change", syncPreference);
+  }, []);
+
+  useEffect(() => {
+    const figure = figureRef.current;
+    const video = videoRef.current;
+    const motionReducedNow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!figure || !video || !videoSrc || videoFailed || reducedMotion || motionReducedNow) {
+      visibleRef.current = false;
+      video?.pause();
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      visibleRef.current = true;
+      const frame = window.requestAnimationFrame(() => setShouldLoad(true));
+      return () => {
+        window.cancelAnimationFrame(frame);
+        visibleRef.current = false;
+        video.pause();
+      };
+    }
+
+    const nearViewport = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShouldLoad(true);
+        nearViewport.disconnect();
+      },
+      { rootMargin: "240px 0px" },
+    );
+    const visibleViewport = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (!entry.isIntersecting) {
+          video.pause();
+          return;
+        }
+
+        if (video.getAttribute("src")) {
+          video.muted = true;
+          void video.play().catch(() => undefined);
+        }
+      },
+      { threshold: 0.08 },
+    );
+
+    nearViewport.observe(figure);
+    visibleViewport.observe(figure);
 
     return () => {
-      reducedMotion.removeEventListener("change", syncPlayback);
+      nearViewport.disconnect();
+      visibleViewport.disconnect();
+      visibleRef.current = false;
       video.pause();
     };
-  }, [videoFailed, videoSrc]);
+  }, [reducedMotion, videoFailed, videoSrc]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldLoad || reducedMotion || !visibleRef.current) return;
+    video.muted = true;
+    void video.play().catch(() => undefined);
+  }, [reducedMotion, shouldLoad]);
 
   return (
-    <figure className={`cinematic-media ${className}`.trim()}>
+    <figure ref={figureRef} className={`cinematic-media ${className}`.trim()}>
       {videoSrc && !videoFailed ? (
         <video
           ref={videoRef}
-          src={videoSrc}
+          src={shouldLoad && !reducedMotion ? videoSrc : undefined}
+          data-video-src={videoSrc}
           poster={posterSrc}
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-label={alt}
           onError={() => setVideoFailed(true)}
         />

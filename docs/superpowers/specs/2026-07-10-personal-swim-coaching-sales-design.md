@@ -88,4 +88,3 @@ Every primary CTA opens `https://www.instagram.com/kachamba_swim/` in a new tab.
 - Maintain responsive desktop and mobile layouts, reduced-motion support, Ukrainian and English content, and accessible language controls.
 - Update tests to assert the product name, entry price, two audience paths, Instagram conversion, and absence of starter preview UI.
 - Validate with `npm test`, production build, lint, and desktop/mobile browser review including both language variants and every CTA.
-

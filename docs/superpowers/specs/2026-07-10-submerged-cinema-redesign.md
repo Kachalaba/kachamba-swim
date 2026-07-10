@@ -166,4 +166,3 @@ Components must render meaningful static HTML before client-side motion attaches
 - Review desktop and 390px mobile layouts in the browser.
 - Verify Ukrainian/English switching, document language, every CTA, video poster fallback, and no horizontal overflow.
 - Verify reduced-motion mode leaves a complete, readable page.
-

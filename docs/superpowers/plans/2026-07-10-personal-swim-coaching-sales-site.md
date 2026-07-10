@@ -235,4 +235,3 @@ git push
 ```
 
 Only create the final commit when verification requires a source change. If no source changes are required, run `git push` without creating an empty commit.
-
