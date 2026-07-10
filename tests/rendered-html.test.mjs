@@ -28,6 +28,14 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /План → дія → відеозворотний зв’язок → корекція → безперервність/);
   assert.match(html, /Надсилаєте відео й отримуєте зворотний зв’язок/);
   assert.match(html, /Уточнюємо наступний блок/);
+  assert.match(html, /7 років методики/);
+  assert.match(html, /5000\+ годин персональної роботи/);
+  assert.match(html, /Дихання → Техніка → Темп → Відновлення/);
+  assert.match(html, /План → Дія → Відеорозбір → Корекція → Наступний блок/);
+  assert.match(html, /src="\/media\/coaching-loop\.mp4"/);
+  assert.match(html, /poster="\/media\/coaching-loop-poster\.webp"/);
+  assert.match(html, /src="\/media\/coach-deck-loop\.mp4"/);
+  assert.match(html, /poster="\/media\/coach-deck-poster\.webp"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];
