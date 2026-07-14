@@ -144,7 +144,7 @@ button:focus-visible, a:focus-visible {
   background: var(--water);
   isolation: isolate;
 }
-.cinema-hero-media, .cinema-hero-shade { position: absolute; inset: 0; }
+.cinema-hero-media, .cinema-hero-shade, .water-refraction { position: absolute; inset: 0; }
 .cinema-hero-media { z-index: -3; overflow: hidden; }
 .cinema-hero-media img {
   width: 100%;
@@ -155,8 +155,30 @@ button:focus-visible, a:focus-visible {
   transform: scale(1.015);
   animation: hero-drift 18s var(--ease) infinite alternate;
 }
-.cinema-hero-shade {
+.cinema-hero[data-water-interface="ready"] .cinema-hero-media img {
+  animation: none;
+  transform: translate3d(0, var(--water-depth-y), 0) scale(var(--water-depth-scale));
+}
+.water-refraction {
   z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(circle clamp(130px, 18vw, 260px) at var(--water-x) var(--water-y), #000 0 46%, rgba(0, 0, 0, .82) 62%, transparent 100%);
+  mask-image: radial-gradient(circle clamp(130px, 18vw, 260px) at var(--water-x) var(--water-y), #000 0 46%, rgba(0, 0, 0, .82) 62%, transparent 100%);
+  transition: opacity .7s var(--ease);
+}
+.cinema-hero[data-water-interface="ready"] .water-refraction { opacity: .78; }
+.water-refraction img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 44%;
+  filter: saturate(.9) contrast(1.08) brightness(.82) hue-rotate(8deg);
+  transform: translate3d(var(--water-shift-x), var(--water-shift-y), 0) scale(1.055);
+}
+.cinema-hero-shade {
+  z-index: -1;
   background:
     linear-gradient(90deg, rgba(6, 24, 29, .92) 0%, rgba(6, 24, 29, .58) 44%, rgba(6, 24, 29, .16) 76%),
     linear-gradient(0deg, rgba(6, 24, 29, .94), transparent 63%);
@@ -203,10 +225,36 @@ button:focus-visible, a:focus-visible {
 .cinema-hero-copy h1 span { display: block; white-space: nowrap; }
 .hero-title-filled { color: var(--pearl); }
 .hero-title-outline {
+  position: relative;
   color: rgba(245, 240, 230, .1);
   -webkit-text-stroke: 1px rgba(245, 240, 230, .88);
   font-size: .58em;
   letter-spacing: -.06em;
+}
+.hero-title-outline-stroke, .hero-title-outline-fill { display: block; }
+.hero-title-outline-fill {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  color: var(--pearl);
+  -webkit-text-stroke: 0;
+  clip-path: inset(calc(100% - var(--water-fill)) 0 0);
+  pointer-events: none;
+}
+.hero-title-outline-fill::before { content: attr(data-text); }
+.cinema-hero[data-water-interface="ready"] .hero-title-outline-fill { display: block; }
+.cinema-hero[data-water-interface="ready"] .hero-title-outline::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: calc(100% - var(--water-fill));
+  left: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--aqua) 18%, var(--ice) 55%, transparent);
+  box-shadow: 0 0 18px rgba(126, 242, 226, .5);
 }
 .hero-offer {
   margin: 26px 0 0;
@@ -506,6 +554,9 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .wordmark { font-size: 10px; }
   .cinema-hero { min-height: 100svh; margin: 0; }
   .cinema-hero-media img { object-position: 58% center; }
+  .water-refraction img { object-position: 58% center; }
+  .cinema-hero[data-water-interface="ready"] .water-refraction { opacity: 0; }
+  .cinema-hero[data-water-pointer="active"] .water-refraction { opacity: .62; }
   .cinema-hero-shade {
     background:
       linear-gradient(90deg, rgba(6, 24, 29, .82), rgba(6, 24, 29, .25)),
@@ -588,5 +639,8 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .cinematic-media video, .cinematic-media img, .cinema-hero-media img { transform: none !important; }
+  .water-refraction { display: none !important; }
+  .hero-title-outline-fill { display: block !important; clip-path: inset(0) !important; }
+  .hero-title-outline::after { display: none !important; }
   .progress-rail-line::after { transform: scaleX(1) !important; }
 }

@@ -101,6 +101,41 @@ assert.equal(desktop.overflow, 0);
 assert.equal(desktop.heroFits, true);
 assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
+
+const waterInitial = await evaluate(`(() => {
+  const hero = document.querySelector('.cinema-hero');
+  return {
+    state: hero.dataset.waterInterface,
+    x: hero.style.getPropertyValue('--water-x'),
+    fill: Number.parseFloat(hero.style.getPropertyValue('--water-fill')),
+  };
+})()`);
+assert.equal(waterInitial.state, "ready");
+
+await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 410, y: 280 });
+await delay(180);
+const waterMoved = await evaluate(`(() => {
+  const hero = document.querySelector('.cinema-hero');
+  const cta = document.querySelector('.cinema-hero .button');
+  const rect = cta.getBoundingClientRect();
+  const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  return {
+    x: hero.style.getPropertyValue('--water-x'),
+    pointer: hero.dataset.waterPointer,
+    ctaIsTopmost: hit === cta || cta.contains(hit),
+  };
+})()`);
+assert.notEqual(waterMoved.x, waterInitial.x);
+assert.equal(waterMoved.pointer, "active");
+assert.equal(waterMoved.ctaIsTopmost, true);
+
+await evaluate(`window.scrollBy({ top: 240, behavior: 'instant' }); true`);
+await delay(180);
+const waterScrolledFill = await evaluate(
+  `Number.parseFloat(document.querySelector('.cinema-hero').style.getPropertyValue('--water-fill'))`,
+);
+assert.ok(waterScrolledFill > waterInitial.fill);
+await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
 await screenshot("/tmp/kachamba-desktop.png");
 
 await evaluate(`document.querySelector('#method').scrollIntoView({ block: 'center' }); true`);
@@ -188,9 +223,11 @@ await navigate();
 await evaluate(`document.querySelector('#system').scrollIntoView({ block: 'center' }); true`);
 await delay(700);
 const reduced = await evaluate(`(() => ({
+  waterState: document.querySelector('.cinema-hero').dataset.waterInterface,
   videos: [...document.querySelectorAll('video')].map((video) => ({ hasSrc: video.hasAttribute('src'), paused: video.paused })),
   rails: [...document.querySelectorAll('[data-progress-rail]')].map((rail) => rail.dataset.complete),
 }))()`);
+assert.equal(reduced.waterState, "reduced");
 assert.ok(reduced.videos.every((video) => !video.hasSrc && video.paused));
 assert.ok(reduced.rails.every((complete) => complete === "true"));
 assert.deepEqual(browserErrors, []);

@@ -43,7 +43,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /<section[^>]*class="cinema-hero"[^>]*data-water-interface="idle"/);
   assert.match(html, /class="water-refraction" aria-hidden="true"/);
   assert.match(html, /class="hero-title-outline-fill" aria-hidden="true"/);
-  assert.match(html, /class="hero-title-outline-fill"[^>]*>підлаштоване під ваше життя\.<\/span>/);
+  assert.match(html, /class="hero-title-outline-fill"[^>]*data-text="підлаштоване під ваше життя\."/);
   assert.match(html, /Плавання, яке[\s\S]*підлаштоване під ваше життя\./);
   assert.match(html, /PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE/);
   assert.match(html, /Обговорити формат/);

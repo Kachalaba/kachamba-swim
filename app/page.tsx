@@ -78,9 +78,11 @@ export default function Home() {
             <span className="hero-title-filled">{t.headlineLines[0]}</span>
             <span className="hero-title-outline">
               <span className="hero-title-outline-stroke">{t.headlineLines[1]}</span>
-              <span className="hero-title-outline-fill" aria-hidden="true">
-                {t.headlineLines[1]}
-              </span>
+              <span
+                className="hero-title-outline-fill"
+                aria-hidden="true"
+                data-text={t.headlineLines[1]}
+              />
             </span>
           </h1>
           <p className="hero-offer">{t.offer}</p>
