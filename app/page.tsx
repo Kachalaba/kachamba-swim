@@ -5,6 +5,7 @@ import { CinematicMedia } from "./components/CinematicMedia";
 import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
+import { WaterInterface } from "./components/WaterInterface";
 import { copy, instagramUrl, type Language } from "./site-copy";
 
 export default function Home() {
@@ -69,16 +70,18 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="cinema-hero" id="top" aria-labelledby="hero-title">
-        <div className="cinema-hero-media" aria-hidden="true">
-          <img src="/media/hero-pool.webp" alt="" />
-        </div>
+      <WaterInterface>
         <div className="cinema-hero-shade" aria-hidden="true" />
         <Reveal className="cinema-hero-copy">
           <p className="eyebrow">{t.label}</p>
           <h1 id="hero-title">
             <span className="hero-title-filled">{t.headlineLines[0]}</span>
-            <span className="hero-title-outline">{t.headlineLines[1]}</span>
+            <span className="hero-title-outline">
+              <span className="hero-title-outline-stroke">{t.headlineLines[1]}</span>
+              <span className="hero-title-outline-fill" aria-hidden="true">
+                {t.headlineLines[1]}
+              </span>
+            </span>
           </h1>
           <p className="hero-offer">{t.offer}</p>
           <p className="hero-intro">{t.heroText}</p>
@@ -96,7 +99,7 @@ export default function Home() {
             {t.documentaryNotes.map((note) => <li key={note}>{note}</li>)}
           </ul>
         </div>
-      </section>
+      </WaterInterface>
 
       <section className="routes scene" id="audiences" aria-labelledby="audiences-title">
         <p className="scene-number" aria-hidden="true">01</p>
