@@ -52,6 +52,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /data-active-route="0"/);
   assert.match(html, /data-progress-mode="method"/);
   assert.match(html, /data-progress-mode="coaching"/);
+  assert.equal((html.match(/data-surface="true"/g) ?? []).length, 5);
   assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,

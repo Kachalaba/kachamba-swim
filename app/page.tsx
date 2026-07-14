@@ -105,7 +105,7 @@ export default function Home() {
 
       <section className="routes scene" id="audiences" aria-labelledby="audiences-title">
         <p className="scene-number" aria-hidden="true">01</p>
-        <Reveal className="scene-heading">
+        <Reveal className="scene-heading" surface>
           <p className="eyebrow">{t.audienceLabel}</p>
           <h2 id="audiences-title">{t.audienceTitle}</h2>
         </Reveal>
@@ -122,7 +122,7 @@ export default function Home() {
 
       <section className="method scene" id="method" aria-labelledby="method-title">
         <p className="scene-number" aria-hidden="true">02</p>
-        <Reveal className="method-copy">
+        <Reveal className="method-copy" surface>
           <p className="eyebrow">{t.methodLabel}</p>
           <h2 id="method-title">{t.methodTitle}</h2>
           <p>{t.methodText}</p>
@@ -137,7 +137,7 @@ export default function Home() {
       <section className="coaching-loop scene" id="system" aria-labelledby="loop-title">
         <p className="scene-number" aria-hidden="true">03</p>
         <div className="coaching-loop-lead">
-          <Reveal className="scene-heading">
+          <Reveal className="scene-heading" surface>
             <p className="eyebrow">{t.loopLabel}</p>
             <h2 id="loop-title">{t.loopTitle}</h2>
             <p>{t.loopText}</p>
@@ -205,7 +205,7 @@ export default function Home() {
 
       <section className="practice scene" id="practice" aria-labelledby="practice-title">
         <p className="scene-number" aria-hidden="true">04</p>
-        <Reveal className="scene-heading">
+        <Reveal className="scene-heading" surface>
           <p className="eyebrow">{t.practiceLabel}</p>
           <h2 id="practice-title">{t.practiceTitle}</h2>
           <p>{t.practiceText}</p>
@@ -244,7 +244,7 @@ export default function Home() {
 
       <section className="offer scene" id="price" aria-labelledby="price-title">
         <p className="scene-number" aria-hidden="true">05</p>
-        <Reveal className="offer-heading">
+        <Reveal className="offer-heading" surface>
           <p className="eyebrow">{t.pricingLabel}</p>
           <h2 id="price-title">{t.pricingTitle}</h2>
           <p className="offer-price">{t.price}</p>

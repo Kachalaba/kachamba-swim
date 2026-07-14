@@ -148,6 +148,7 @@ const method = await evaluate(`(() => ({
 assert.equal(method.complete, "true");
 assert.equal(method.routesRevealed, true);
 assert.equal(method.routeActive, "1");
+assert.equal(await evaluate(`document.querySelector('#method').dataset.surfacePass`), "true");
 await screenshot("/tmp/kachamba-method.png");
 
 await evaluate(`document.querySelector('[data-progress-mode="coaching"]').scrollIntoView({ block: 'center' }); true`);
@@ -224,10 +225,12 @@ await evaluate(`document.querySelector('#system').scrollIntoView({ block: 'cente
 await delay(700);
 const reduced = await evaluate(`(() => ({
   waterState: document.querySelector('.cinema-hero').dataset.waterInterface,
+  surfaceDisplay: getComputedStyle(document.querySelector('#method'), '::after').display,
   videos: [...document.querySelectorAll('video')].map((video) => ({ hasSrc: video.hasAttribute('src'), paused: video.paused })),
   rails: [...document.querySelectorAll('[data-progress-rail]')].map((rail) => rail.dataset.complete),
 }))()`);
 assert.equal(reduced.waterState, "reduced");
+assert.equal(reduced.surfaceDisplay, "none");
 assert.ok(reduced.videos.every((video) => !video.hasSrc && video.paused));
 assert.ok(reduced.rails.every((complete) => complete === "true"));
 assert.deepEqual(browserErrors, []);

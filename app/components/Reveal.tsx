@@ -6,9 +6,10 @@ type RevealProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
+  surface?: boolean;
 };
 
-export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+export function Reveal({ children, className = "", delay = 0, surface = false }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
 
@@ -17,19 +18,23 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     if (!element) return;
 
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const markRevealed = () => {
+      setRevealed(true);
+      if (surface) element.closest<HTMLElement>(".scene")?.setAttribute("data-surface-pass", "true");
+    };
     const revealWithoutMotion = () => {
-      if (motionPreference.matches) setRevealed(true);
+      if (motionPreference.matches) markRevealed();
     };
 
     if (!("IntersectionObserver" in window) || motionPreference.matches) {
-      const frame = window.requestAnimationFrame(() => setRevealed(true));
+      const frame = window.requestAnimationFrame(markRevealed);
       return () => window.cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        setRevealed(true);
+        markRevealed();
         if (typeof element.animate === "function") {
           element.animate(
             [
@@ -55,10 +60,15 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
       observer.disconnect();
       motionPreference.removeEventListener("change", revealWithoutMotion);
     };
-  }, [delay]);
+  }, [delay, surface]);
 
   return (
-    <div ref={ref} className={`reveal ${className}`.trim()} data-revealed={revealed}>
+    <div
+      ref={ref}
+      className={`reveal ${className}`.trim()}
+      data-revealed={revealed}
+      data-surface={surface || undefined}
+    >
       {children}
     </div>
   );
