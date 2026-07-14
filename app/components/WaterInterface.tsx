@@ -27,8 +27,9 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const hero = ref.current;
-    if (!hero) return;
+    const heroElement = ref.current;
+    if (heroElement === null) return;
+    const hero: HTMLElement = heroElement;
 
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const precisePointer = window.matchMedia("(pointer: fine)");
