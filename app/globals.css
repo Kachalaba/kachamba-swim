@@ -8,6 +8,7 @@
   --pearl: #f5f0e6;
   --mist: rgba(245, 240, 230, .68);
   --line: rgba(217, 255, 248, .18);
+  --htf-gold: #fbbf24;
   --ease: cubic-bezier(.22, 1, .36, 1);
 }
 
@@ -307,21 +308,53 @@ button:focus-visible, a:focus-visible {
   top: 50%;
   right: clamp(20px, 3vw, 48px);
   display: flex;
-  width: min(72vh, 620px);
+  width: min(90vh, 760px);
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 12px;
   transform: translate(50%, -50%) rotate(90deg);
   transform-origin: center;
   color: rgba(245, 240, 230, .66);
-  font-size: 9px;
-  letter-spacing: .15em;
+  font-size: 8px;
+  letter-spacing: .11em;
   text-transform: uppercase;
 }
-.documentary-rail::before { content: ""; flex: 1; height: 1px; background: rgba(217, 255, 248, .3); }
+.documentary-rail::before { content: ""; min-width: 24px; flex: 1; height: 1px; background: rgba(217, 255, 248, .3); }
 .documentary-rail p { margin: 0; white-space: nowrap; }
-.documentary-rail ul { display: flex; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.documentary-rail ul { display: flex; gap: 14px; margin: 0; padding: 0; list-style: none; }
 .documentary-rail li { white-space: nowrap; }
+.documentary-rail p,
+.documentary-rail ul,
+.htf-affiliation--desktop { flex: 0 0 auto; }
+.htf-affiliation--desktop { white-space: nowrap; }
+.htf-affiliation {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(247, 243, 234, .72);
+  text-decoration: none;
+  transition: color 240ms var(--ease);
+}
+.htf-affiliation::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  left: 0;
+  height: 1px;
+  background: var(--htf-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms var(--ease);
+}
+.htf-affiliation:hover,
+.htf-affiliation:focus-visible { color: var(--htf-gold); }
+.htf-affiliation:focus-visible,
+.htf-inline-link:focus-visible { outline-color: var(--htf-gold); }
+.htf-affiliation:hover::after,
+.htf-affiliation:focus-visible::after { transform: scaleX(1); }
+.htf-affiliation--mobile { display: none; }
 
 /* Scene 01 — two paths, presented as image-led editorial spreads. */
 .routes { background: var(--water); }
@@ -574,6 +607,19 @@ button:focus-visible, a:focus-visible {
 .coach-note { max-width: 620px; }
 .coach-note h3 { margin: 0; font-size: clamp(48px, 6vw, 92px); font-weight: 470; letter-spacing: -.07em; line-height: .9; }
 .coach-note > p:not(.eyebrow) { margin: 30px 0 0; color: rgba(6, 24, 29, .68); font-size: 16px; line-height: 1.6; }
+.htf-inline-link {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: rgba(6, 24, 29, .38);
+  text-decoration-thickness: 1px;
+  text-underline-offset: .18em;
+  transition: color 240ms var(--ease), text-decoration-color 240ms var(--ease);
+}
+.htf-inline-link:hover,
+.htf-inline-link:focus-visible {
+  color: var(--htf-gold);
+  text-decoration-color: var(--htf-gold);
+}
 .text-link { display: inline-flex; gap: 14px; margin-top: 42px; border-bottom: 1px solid #126b69; padding-bottom: 8px; color: var(--ink); font-size: 12px; }
 .text-link span { color: #126b69; }
 .documentary-gallery {
@@ -706,6 +752,14 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .hero-facts p { padding: 6px 8px; font-size: 8px; }
   .button { min-width: 196px; padding-left: 18px; }
   .documentary-rail { display: none; }
+  .htf-affiliation--mobile {
+    display: flex;
+    width: fit-content;
+    margin: 0 0 18px;
+    font-size: 9px;
+    letter-spacing: .12em;
+    line-height: 1.35;
+  }
   .scene { min-height: 0; padding: 96px 20px; }
   .scene-number { top: 22px; left: 20px; }
   .scene-heading, .routes .scene-heading, .coaching-offer .scene-heading, .first-week .scene-heading, .offer-heading {
@@ -819,4 +873,5 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .hero-title-outline::after { display: none !important; }
   .progress-rail-line::after { transform: scaleX(1) !important; }
   .scene::after { display: none !important; }
+  .htf-affiliation::after { animation: none !important; transition: none !important; }
 }

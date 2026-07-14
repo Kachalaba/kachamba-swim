@@ -80,6 +80,27 @@ async function screenshot(path) {
   await writeFile(path, Buffer.from(data, "base64"));
 }
 
+async function focusByKeyboard(selector, maxTabs = 24) {
+  await evaluate(`document.activeElement?.blur(); true`);
+  for (let index = 0; index < maxTabs; index += 1) {
+    await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Tab", code: "Tab" });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Tab", code: "Tab" });
+    if (await evaluate(`document.activeElement?.matches(${JSON.stringify(selector)}) ?? false`)) return;
+  }
+  assert.fail(`Keyboard focus did not reach ${selector}`);
+}
+
+function assertSafeHtfLinks(links) {
+  assert.equal(links.length, 2);
+  for (const link of links) {
+    assert.deepEqual(link, {
+      href: "https://happytrifriends.com/",
+      target: "_blank",
+      rel: "noreferrer",
+    });
+  }
+}
+
 await send("Page.enable");
 await send("Runtime.enable");
 await send("Network.enable");
@@ -104,6 +125,21 @@ const desktop = await evaluate(`(() => {
     videos: [...document.querySelectorAll('video')].map((video) => ({
       hasSrc: video.hasAttribute('src'), paused: video.paused, preload: video.preload,
     })),
+    priceText: document.querySelector('#price').textContent,
+    affiliation: {
+      railDisplay: getComputedStyle(document.querySelector('.documentary-rail')).display,
+      desktopDisplay: getComputedStyle(document.querySelector('.htf-affiliation--desktop')).display,
+      mobileDisplay: getComputedStyle(document.querySelector('.htf-affiliation--mobile')).display,
+      desktopVisible: document.querySelector('.htf-affiliation--desktop').getClientRects().length > 0,
+      mobileVisible: document.querySelector('.htf-affiliation--mobile').getClientRects().length > 0,
+      desktopWithinHero: (() => {
+        const rect = document.querySelector('.htf-affiliation--desktop').getBoundingClientRect();
+        return rect.top >= hero.top && rect.right <= hero.right && rect.bottom <= hero.bottom && rect.left >= hero.left;
+      })(),
+      visibleLinks: [...document.querySelectorAll('a[href^="https://happytrifriends.com"]')]
+        .filter((link) => link.getClientRects().length > 0)
+        .map(({ href, target, rel }) => ({ href, target, rel })),
+    },
   };
 })()`);
 assert.equal(desktop.overflow, 0);
@@ -112,6 +148,15 @@ assert.deepEqual(desktop.heroFrame, { left: 0, top: 0, right: desktop.viewport.w
 assert.ok(desktop.headlineGap >= 0);
 assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
+assert.match(desktop.priceText, /4 500 грн\/місяць/);
+assert.doesNotMatch(desktop.priceText, /\$/);
+assert.equal(desktop.affiliation.railDisplay, "flex");
+assert.notEqual(desktop.affiliation.desktopDisplay, "none");
+assert.equal(desktop.affiliation.mobileDisplay, "none");
+assert.equal(desktop.affiliation.desktopVisible, true);
+assert.equal(desktop.affiliation.mobileVisible, false);
+assert.equal(desktop.affiliation.desktopWithinHero, true);
+assertSafeHtfLinks(desktop.affiliation.visibleLinks);
 
 const waterInitial = await evaluate(`(() => {
   const hero = document.querySelector('.cinema-hero');
@@ -169,6 +214,39 @@ const waterScrolledFill = await evaluate(
 assert.ok(waterScrolledFill > waterInitial.fill);
 await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
 await screenshot("/tmp/kachamba-desktop.png");
+
+await focusByKeyboard(".htf-affiliation--desktop");
+await delay(300);
+const desktopFocus = await evaluate(`(() => {
+  const link = document.activeElement;
+  const style = getComputedStyle(link);
+  const line = getComputedStyle(link, '::after');
+  return {
+    focusVisible: link.matches(':focus-visible'),
+    color: style.color,
+    outlineStyle: style.outlineStyle,
+    outlineWidth: style.outlineWidth,
+    outlineColor: style.outlineColor,
+    lineColor: line.backgroundColor,
+    lineTransform: line.transform,
+    lineTransitionProperty: line.transitionProperty,
+    scrollX: window.scrollX,
+    scrollY: window.scrollY,
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  };
+})()`);
+assert.equal(desktopFocus.focusVisible, true);
+assert.equal(desktopFocus.color, "rgb(251, 191, 36)");
+assert.notEqual(desktopFocus.outlineStyle, "none");
+assert.ok(Number.parseFloat(desktopFocus.outlineWidth) >= 2);
+assert.equal(desktopFocus.outlineColor, "rgb(251, 191, 36)");
+assert.equal(desktopFocus.lineColor, "rgb(251, 191, 36)");
+assert.notEqual(desktopFocus.lineTransform, "matrix(0, 0, 0, 1, 0, 0)");
+assert.equal(desktopFocus.lineTransitionProperty, "transform");
+assert.equal(desktopFocus.scrollX, 0);
+assert.equal(desktopFocus.scrollY, 0);
+assert.equal(desktopFocus.overflow, 0);
+await screenshot("/tmp/kachamba-desktop-htf-focus.png");
 
 await evaluate(`document.querySelector('[data-method-rail]').scrollIntoView({ block: 'center' }); true`);
 await delay(500);
@@ -263,18 +341,32 @@ const english = await evaluate(`({
   filled: document.querySelector('.hero-title-filled').textContent,
   outline: document.querySelector('.hero-title-outline').textContent,
   instagram: [...document.querySelectorAll('a[href="https://www.instagram.com/kachamba_swim/"]')].length,
+  priceText: document.querySelector('#price').textContent,
+  visibleHtfLinks: [...document.querySelectorAll('a[href^="https://happytrifriends.com"]')]
+    .filter((link) => link.getClientRects().length > 0)
+    .map(({ href, target, rel }) => ({ href, target, rel })),
 })`);
-assert.deepEqual(english, { lang: "en", filled: "Swimming that", outline: "adapts to your life.", instagram: 4 });
+assert.equal(english.lang, "en");
+assert.equal(english.filled, "Swimming that");
+assert.equal(english.outline, "adapts to your life.");
+assert.equal(english.instagram, 4);
+assert.match(english.priceText, /\$80/);
+assert.match(english.priceText, /\$100/);
+assert.match(english.priceText, /\$140/);
+assert.doesNotMatch(english.priceText, /грн/);
+assertSafeHtfLinks(english.visibleHtfLinks);
 assert.equal(
   await evaluate(`document.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent`),
   "We remove breath-holding and panic until exhaling into the water becomes the rhythm of the stroke.",
 );
+await screenshot("/tmp/kachamba-english.png");
 
 for (const [width, height, path] of [
   [1470, 768, null],
   [1366, 768, null],
   [390, 844, "/tmp/kachamba-mobile.png"],
   [390, 667, null],
+  [333, 667, null],
 ]) {
   await setViewport(width, height);
   await navigate();
@@ -289,12 +381,54 @@ for (const [width, height, path] of [
       outlineRight: document.querySelector('.hero-title-outline').getBoundingClientRect().right,
       headlineGap: outlineTitle.top - filledTitle.bottom,
       viewport: document.documentElement.clientWidth,
+      affiliation: (() => {
+        const desktopLink = document.querySelector('.htf-affiliation--desktop');
+        const mobileLink = document.querySelector('.htf-affiliation--mobile');
+        const cta = document.querySelector('.cinema-hero-copy .button');
+        const mobileBounds = mobileLink.getBoundingClientRect();
+        const ctaBounds = cta.getBoundingClientRect();
+        return {
+          railDisplay: getComputedStyle(document.querySelector('.documentary-rail')).display,
+          desktopDisplay: getComputedStyle(desktopLink).display,
+          mobileDisplay: getComputedStyle(mobileLink).display,
+          desktopVisible: desktopLink.getClientRects().length > 0,
+          mobileVisible: mobileLink.getClientRects().length > 0,
+          desktopWithinHero: (() => {
+            const rect = desktopLink.getBoundingClientRect();
+            return rect.top >= hero.top && rect.right <= hero.right && rect.bottom <= hero.bottom && rect.left >= hero.left;
+          })(),
+          mobileBeforeCta: Boolean(mobileLink.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING),
+          mobileSeparatedFromCta: mobileBounds.bottom <= ctaBounds.top,
+          ctaHeight: ctaBounds.height,
+          visibleLinks: [...document.querySelectorAll('a[href^="https://happytrifriends.com"]')]
+            .filter((link) => link.getClientRects().length > 0)
+            .map(({ href, target, rel }) => ({ href, target, rel })),
+        };
+      })(),
     };
   })()`);
   assert.equal(mobile.overflow, 0);
   assert.equal(mobile.heroFits, true);
   assert.ok(mobile.outlineRight <= mobile.viewport + 1);
   assert.ok(mobile.headlineGap >= 0);
+  assertSafeHtfLinks(mobile.affiliation.visibleLinks);
+  if (width <= 760) {
+    assert.equal(mobile.affiliation.railDisplay, "none");
+    assert.equal(mobile.affiliation.desktopVisible, false);
+    assert.equal(mobile.affiliation.mobileDisplay, "flex");
+    assert.equal(mobile.affiliation.mobileVisible, true);
+    assert.equal(mobile.affiliation.mobileBeforeCta, true);
+    assert.equal(mobile.affiliation.mobileSeparatedFromCta, true);
+    assert.ok(mobile.affiliation.ctaHeight >= 44);
+  } else {
+    assert.equal(mobile.affiliation.railDisplay, "flex");
+    assert.notEqual(mobile.affiliation.desktopDisplay, "none");
+    assert.equal(mobile.affiliation.desktopVisible, true);
+    assert.equal(mobile.affiliation.desktopWithinHero, true);
+    assert.equal(mobile.affiliation.mobileDisplay, "none");
+    assert.equal(mobile.affiliation.mobileVisible, false);
+  }
+  if (width === 333) await screenshot("/tmp/kachamba-mobile-333.png");
   if (path) {
     await screenshot("/tmp/kachamba-mobile-hero.png");
     const cornerTouch = { x: 30, y: 140 };
@@ -365,6 +499,26 @@ await send("Emulation.setEmulatedMedia", {
 });
 await setViewport(1470, 705);
 await navigate();
+await focusByKeyboard(".htf-affiliation--desktop");
+await delay(30);
+const reducedAffiliation = await evaluate(`(() => {
+  const link = document.activeElement;
+  const line = getComputedStyle(link, '::after');
+  return {
+    focusVisible: link.matches(':focus-visible'),
+    color: getComputedStyle(link).color,
+    outlineStyle: getComputedStyle(link).outlineStyle,
+    lineTransform: line.transform,
+    lineTransitionProperty: line.transitionProperty,
+    lineTransitionDuration: line.transitionDuration,
+  };
+})()`);
+assert.equal(reducedAffiliation.focusVisible, true);
+assert.equal(reducedAffiliation.color, "rgb(251, 191, 36)");
+assert.notEqual(reducedAffiliation.outlineStyle, "none");
+assert.notEqual(reducedAffiliation.lineTransform, "matrix(0, 0, 0, 1, 0, 0)");
+assert.equal(reducedAffiliation.lineTransitionProperty, "none");
+assert.equal(reducedAffiliation.lineTransitionDuration, "0s");
 await evaluate(`document.querySelector('#system').scrollIntoView({ block: 'center' }); true`);
 await delay(700);
 const reduced = await evaluate(`(() => ({
@@ -389,4 +543,4 @@ assert.deepEqual(browserErrors, []);
 await send("Emulation.setEmulatedMedia", { media: "screen", features: [] });
 socket.close();
 
-console.log(JSON.stringify({ desktop, method, coachingStart, coachingLater, english, reduced }, null, 2));
+console.log(JSON.stringify({ desktop, desktopFocus, method, coachingStart, coachingLater, english, reducedAffiliation, reduced }, null, 2));
