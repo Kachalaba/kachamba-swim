@@ -180,9 +180,12 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
       style={initialStyle}
     >
       <div className="cinema-hero-media" aria-hidden="true">
+        {/* The same local crop is required for the paired CSS refraction layers. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/media/hero-pool.webp" alt="" />
       </div>
       <div className="water-refraction" aria-hidden="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/media/hero-pool.webp" alt="" />
       </div>
       {children}
