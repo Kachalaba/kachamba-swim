@@ -89,7 +89,7 @@ export default function Home() {
           <p className="hero-offer">{t.offer}</p>
           <p className="hero-intro">{t.heroText}</p>
           <div className="hero-facts">
-            <p>{t.price}</p>
+            <p>{t.heroPrice}</p>
             <p>{t.capacity}</p>
           </div>
           <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">

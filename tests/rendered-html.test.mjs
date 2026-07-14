@@ -19,7 +19,10 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /Персональне онлайн-ведення з плавання/);
+  assert.match(html, /Повне ведення — від \$100\/місяць/);
   assert.match(html, /Від \$100\/місяць/);
+  assert.match(html, /План з плавання: 2 тренування щотижня — \$80\/місяць/);
+  assert.match(html, /Силовий план — \+\$20\/місяць/);
   assert.match(html, /Для дорослих, які починають/);
   assert.match(html, /Для триатлетів-любителів/);
   assert.match(html, /До 8–10 спортсменів одночасно/);
@@ -34,6 +37,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /data-method-rail/);
   assert.match(html, /role="tablist"/);
   assert.equal((html.match(/role="tab"/g) ?? []).length, 4);
+  assert.equal((html.match(/<li role="presentation">/g) ?? []).length, 4);
   assert.equal((html.match(/data-method-panel/g) ?? []).length, 4);
   assert.match(html, /Прибираємо затримку й паніку: видих у воду стає ритмом руху\./);
   assert.match(html, /Збираємо положення тіла, захват і ковзання без зайвої напруги\./);
@@ -62,6 +66,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /data-progress-mode="coaching"/);
   assert.equal((html.match(/data-surface="true"/g) ?? []).length, 5);
   assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
+  assert.match(html, /<link[^>]*rel="icon"[^>]*href="[^"]*\/favicon\.svg"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];

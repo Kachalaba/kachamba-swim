@@ -10,6 +10,7 @@ export const copy = {
     label: "Онлайн-ведення з плавання · Україна та світ",
     headlineLines: ["Плавання, яке", "підлаштоване під ваше життя."],
     offer: "Персональне онлайн-ведення з плавання",
+    heroPrice: "Повне ведення — від $100/місяць",
     price: "Від $100/місяць",
     capacity: "До 8–10 спортсменів одночасно",
     cta: "Обговорити формат",
@@ -79,9 +80,9 @@ export const copy = {
     pricingLabel: "Вартість",
     pricingTitle: "Персональна робота з прозорою логікою ціни.",
     priceFacts: [
-      "2 тренування з плавання щотижня — $80/місяць",
-      "План для залу на квартал — $60 / $20 на місяць",
-      "3 тренування з плавання щотижня + зал — від $140/місяць",
+      "План з плавання: 2 тренування щотижня — $80/місяць",
+      "Силовий план — +$20/місяць; разом із двома плаваннями — від $100",
+      "Повне ведення: 3 тренування з плавання + зал — від $140/місяць",
     ],
     pricingText:
       "Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
@@ -97,6 +98,7 @@ export const copy = {
     label: "Online swim coaching · Ukraine and worldwide",
     headlineLines: ["Swimming that", "adapts to your life."],
     offer: "Personal online swim coaching",
+    heroPrice: "Full coaching — from $100/month",
     price: "From $100/month",
     capacity: "Up to 8–10 athletes at a time",
     cta: "Discuss the fit",
@@ -166,9 +168,9 @@ export const copy = {
     pricingLabel: "Pricing",
     pricingTitle: "Personal work with transparent pricing logic.",
     priceFacts: [
-      "2 swim sessions per week — $80/month",
-      "Quarterly gym plan — $60 / $20 per month",
-      "3 swim sessions per week + gym — from $140/month",
+      "Swim plan: two weekly sessions — $80/month",
+      "Strength plan — +$20/month; with two swim sessions — from $100",
+      "Full coaching: three swim sessions + strength — from $140/month",
     ],
     pricingText:
       "Your final format depends on your experience, goal and the number of sessions that genuinely fit into your week.",

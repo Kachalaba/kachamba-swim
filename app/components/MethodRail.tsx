@@ -50,7 +50,7 @@ export function MethodRail({ label, items }: MethodRailProps) {
       <span className="method-waterline" aria-hidden="true" />
       <ol role="tablist" aria-label={label}>
         {items.map(([title], index) => (
-          <li key={title}>
+          <li key={title} role="presentation">
             <button
               ref={(button) => {
                 buttonsRef.current[index] = button;

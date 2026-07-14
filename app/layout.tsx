@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kachalaba-personal-swim.kamamber.chatgpt.site"),
   title: "Mykyta Kachalaba — Personal Swim Coaching",
   description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: "Mykyta Kachalaba — Personal Swim Coaching",
     description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",

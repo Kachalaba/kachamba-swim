@@ -20,6 +20,8 @@ const initialStyle = {
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(maximum, Math.max(minimum, value));
 
+const touchDragThreshold = 12;
+
 export function WaterInterface({ children }: WaterInterfaceProps) {
   const ref = useRef<HTMLElement>(null);
 
@@ -38,6 +40,8 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
     let currentY = targetY;
     let pointerActive = false;
     let touchPointerId: number | null = null;
+    let touchOriginX = 0;
+    let touchOriginY = 0;
 
     const setPointerActive = (active: boolean) => {
       pointerActive = active;
@@ -99,6 +103,10 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
 
       if (event.pointerType === "touch") {
         if (touchPointerId !== event.pointerId || overControl) return;
+        if (
+          !pointerActive &&
+          Math.hypot(event.clientX - touchOriginX, event.clientY - touchOriginY) < touchDragThreshold
+        ) return;
       } else if (!precisePointer.matches || overControl) {
         resetTarget();
         return;
@@ -120,12 +128,15 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
       const target = event.target;
       if (event.pointerType !== "touch" || (target instanceof Element && target.closest("a, button"))) return;
       touchPointerId = event.pointerId;
+      touchOriginX = event.clientX;
+      touchOriginY = event.clientY;
       measure();
-      updateTarget(event);
     };
     const handlePointerEnd = (event: PointerEvent) => {
       if (event.pointerType === "touch" && touchPointerId !== event.pointerId) return;
       touchPointerId = null;
+      touchOriginX = 0;
+      touchOriginY = 0;
       resetTarget();
     };
     const handleResize = () => {

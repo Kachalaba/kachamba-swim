@@ -88,6 +88,8 @@ await setViewport(1470, 705);
 await navigate();
 const desktop = await evaluate(`(() => {
   const hero = document.querySelector('.cinema-hero').getBoundingClientRect();
+  const filledTitle = document.querySelector('.hero-title-filled').getBoundingClientRect();
+  const outlineTitle = document.querySelector('.hero-title-outline').getBoundingClientRect();
   const required = [...document.querySelectorAll('.cinema-hero-copy > *')].map((node) => {
     const rect = node.getBoundingClientRect();
     return { top: rect.top, bottom: rect.bottom };
@@ -95,6 +97,7 @@ const desktop = await evaluate(`(() => {
   return {
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     heroFits: required.every((rect) => rect.top >= hero.top - 1 && rect.bottom <= hero.bottom + 1),
+    headlineGap: outlineTitle.top - filledTitle.bottom,
     routeActive: document.querySelector('.route-pair').dataset.activeRoute,
     videos: [...document.querySelectorAll('video')].map((video) => ({
       hasSrc: video.hasAttribute('src'), paused: video.paused, preload: video.preload,
@@ -103,6 +106,7 @@ const desktop = await evaluate(`(() => {
 })()`);
 assert.equal(desktop.overflow, 0);
 assert.equal(desktop.heroFits, true);
+assert.ok(desktop.headlineGap >= 0);
 assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
 
@@ -253,17 +257,45 @@ for (const [width, height, path] of [
   const mobile = await evaluate(`(() => {
     const hero = document.querySelector('.cinema-hero').getBoundingClientRect();
     const copy = document.querySelector('.cinema-hero-copy').getBoundingClientRect();
+    const filledTitle = document.querySelector('.hero-title-filled').getBoundingClientRect();
+    const outlineTitle = document.querySelector('.hero-title-outline').getBoundingClientRect();
     return {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       heroFits: copy.top >= hero.top - 1 && copy.bottom <= hero.bottom + 1,
       outlineRight: document.querySelector('.hero-title-outline').getBoundingClientRect().right,
+      headlineGap: outlineTitle.top - filledTitle.bottom,
       viewport: document.documentElement.clientWidth,
     };
   })()`);
   assert.equal(mobile.overflow, 0);
   assert.equal(mobile.heroFits, true);
   assert.ok(mobile.outlineRight <= mobile.viewport + 1);
+  assert.ok(mobile.headlineGap >= 0);
   if (path) {
+    await screenshot("/tmp/kachamba-mobile-hero.png");
+    const cornerTouch = { x: 30, y: 140 };
+    await send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [cornerTouch],
+    });
+    await delay(80);
+    const tapWaterState = await evaluate(`document.querySelector('.cinema-hero').dataset.waterPointer`);
+    await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.equal(tapWaterState, "idle");
+
+    await send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [cornerTouch],
+    });
+    await send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: 56, y: 140 }],
+    });
+    await delay(80);
+    const dragWaterState = await evaluate(`document.querySelector('.cinema-hero').dataset.waterPointer`);
+    await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.equal(dragWaterState, "active");
+
     await evaluate(`document.querySelector('#method-tab-4').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
     await delay(180);
     const mobilePanelHeight = await evaluate(`document.querySelector('.method-detail-stack').getBoundingClientRect().height`);
