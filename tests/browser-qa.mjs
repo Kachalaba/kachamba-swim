@@ -138,18 +138,46 @@ assert.ok(waterScrolledFill > waterInitial.fill);
 await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
 await screenshot("/tmp/kachamba-desktop.png");
 
-await evaluate(`document.querySelector('#method').scrollIntoView({ block: 'center' }); true`);
-await delay(1_800);
-const method = await evaluate(`(() => ({
-  complete: document.querySelector('[data-progress-mode="method"]').dataset.complete,
-  routesRevealed: [...document.querySelectorAll('.route')].every((route) => route.dataset.revealed === 'true'),
-  routeActive: document.querySelector('.route-pair').dataset.activeRoute,
-}))()`);
-assert.equal(method.complete, "true");
-assert.equal(method.routesRevealed, true);
-assert.equal(method.routeActive, "1");
+await evaluate(`document.querySelector('[data-method-rail]').scrollIntoView({ block: 'center' }); true`);
+await delay(500);
+const methodBefore = await evaluate(`(() => {
+  const rail = document.querySelector('[data-method-rail]');
+  const panel = rail.querySelector('.method-detail-stack');
+  return {
+    active: rail.dataset.activeStep,
+    height: panel.getBoundingClientRect().height,
+    visible: rail.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent,
+    routesRevealed: [...document.querySelectorAll('.route')].every((route) => route.dataset.revealed === 'true'),
+    routeActive: document.querySelector('.route-pair').dataset.activeRoute,
+  };
+})()`);
+assert.equal(methodBefore.active, "1");
+assert.equal(methodBefore.routesRevealed, true);
+assert.equal(methodBefore.routeActive, "1");
+
+const techniqueRect = await evaluate(`(() => {
+  const rect = document.querySelector('#method-tab-2').getBoundingClientRect();
+  return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+})()`);
+await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...techniqueRect });
+await delay(300);
+const methodAfterHover = await evaluate(`(() => {
+  const rail = document.querySelector('[data-method-rail]');
+  return {
+    active: rail.dataset.activeStep,
+    height: rail.querySelector('.method-detail-stack').getBoundingClientRect().height,
+    visible: rail.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent,
+    transform: getComputedStyle(rail.querySelector('.method-waterline')).transform,
+  };
+})()`);
+assert.equal(methodAfterHover.active, "2");
+assert.equal(methodAfterHover.height, methodBefore.height);
+assert.match(methodAfterHover.visible, /Збираємо положення тіла/);
+assert.notEqual(methodAfterHover.transform, "none");
 assert.equal(await evaluate(`document.querySelector('#method').dataset.surfacePass`), "true");
 await screenshot("/tmp/kachamba-method.png");
+
+const method = { before: methodBefore, afterHover: methodAfterHover };
 
 await evaluate(`document.querySelector('[data-progress-mode="coaching"]').scrollIntoView({ block: 'center' }); true`);
 await delay(700);

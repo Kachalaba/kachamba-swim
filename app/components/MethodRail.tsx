@@ -5,7 +5,6 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent,
-  type PointerEvent,
 } from "react";
 
 type MethodItem = readonly [title: string, description: string];
@@ -41,10 +40,6 @@ export function MethodRail({ label, items }: MethodRailProps) {
     selectAndFocus(nextIndex);
   };
 
-  const handlePointerEnter = (event: PointerEvent<HTMLButtonElement>, index: number) => {
-    if (event.pointerType !== "touch") setActiveStep(index);
-  };
-
   return (
     <div
       className="method-rail"
@@ -67,7 +62,7 @@ export function MethodRail({ label, items }: MethodRailProps) {
               aria-controls={`method-panel-${index + 1}`}
               tabIndex={activeStep === index ? 0 : -1}
               data-active={activeStep === index}
-              onPointerEnter={(event) => handlePointerEnter(event, index)}
+              onPointerEnter={() => setActiveStep(index)}
               onFocus={() => setActiveStep(index)}
               onClick={() => setActiveStep(index)}
               onKeyDown={(event) => handleKeyDown(event, index)}
