@@ -15,6 +15,7 @@ const initialStyle = {
   "--water-depth-scale": "1.015",
   "--water-shift-x": "-8px",
   "--water-shift-y": "5px",
+  "--water-edge-opacity": "1",
 } as CSSProperties;
 
 const clamp = (value: number, minimum: number, maximum: number) =>
@@ -61,6 +62,7 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
     const resetTarget = () => {
       targetX = 0.68;
       targetY = 0.42;
+      hero.style.setProperty("--water-edge-opacity", "1");
       setPointerActive(false);
       requestPaint();
     };
@@ -114,6 +116,9 @@ export function WaterInterface({ children }: WaterInterfaceProps) {
 
       targetX = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
       targetY = clamp((event.clientY - bounds.top) / bounds.height, 0, 1);
+      const horizontalEdgeFade = clamp(Math.min(targetX, 1 - targetX) / 0.08, 0, 1);
+      const verticalEdgeFade = clamp(Math.min(targetY, 1 - targetY) / 0.12, 0, 1);
+      hero.style.setProperty("--water-edge-opacity", Math.min(horizontalEdgeFade, verticalEdgeFade).toFixed(3));
       setPointerActive(true);
       requestPaint();
     };

@@ -151,11 +151,11 @@ button:focus-visible, a:focus-visible {
 .button:hover { transform: translateY(-3px); }
 .button:hover span { transform: rotate(45deg); }
 
-/* Scene 00 — a framed, documentary-scale opening image. */
+/* Scene 00 — a full-bleed, documentary-scale opening image. */
 .cinema-hero {
   position: relative;
-  min-height: calc(100svh - 64px);
-  margin: 32px;
+  min-height: 100svh;
+  margin: 0;
   overflow: hidden;
   background: var(--water);
   isolation: isolate;
@@ -183,9 +183,9 @@ button:focus-visible, a:focus-visible {
   opacity: 0;
   -webkit-mask-image: radial-gradient(circle clamp(130px, 18vw, 260px) at var(--water-x) var(--water-y), #000 0 46%, rgba(0, 0, 0, .82) 62%, transparent 100%);
   mask-image: radial-gradient(circle clamp(130px, 18vw, 260px) at var(--water-x) var(--water-y), #000 0 46%, rgba(0, 0, 0, .82) 62%, transparent 100%);
-  transition: opacity .7s var(--ease);
+  transition: opacity .32s var(--ease);
 }
-.cinema-hero[data-water-interface="ready"] .water-refraction { opacity: .78; }
+.cinema-hero[data-water-interface="ready"] .water-refraction { opacity: calc(.78 * var(--water-edge-opacity)); }
 .water-refraction img {
   width: 100%;
   height: 100%;
@@ -684,7 +684,7 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .cinema-hero-media img { object-position: 58% center; }
   .water-refraction img { object-position: 58% center; }
   .cinema-hero[data-water-interface="ready"] .water-refraction { opacity: 0; }
-  .cinema-hero[data-water-pointer="active"] .water-refraction { opacity: .62; }
+  .cinema-hero[data-water-pointer="active"] .water-refraction { opacity: calc(.62 * var(--water-edge-opacity)); }
   .cinema-hero-shade {
     background:
       linear-gradient(90deg, rgba(6, 24, 29, .82), rgba(6, 24, 29, .25)),

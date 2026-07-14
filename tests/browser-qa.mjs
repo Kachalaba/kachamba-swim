@@ -97,6 +97,8 @@ const desktop = await evaluate(`(() => {
   return {
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     heroFits: required.every((rect) => rect.top >= hero.top - 1 && rect.bottom <= hero.bottom + 1),
+    heroFrame: { left: hero.left, top: hero.top, right: hero.right, bottom: hero.bottom },
+    viewport: { width: window.innerWidth, height: window.innerHeight },
     headlineGap: outlineTitle.top - filledTitle.bottom,
     routeActive: document.querySelector('.route-pair').dataset.activeRoute,
     videos: [...document.querySelectorAll('video')].map((video) => ({
@@ -106,6 +108,7 @@ const desktop = await evaluate(`(() => {
 })()`);
 assert.equal(desktop.overflow, 0);
 assert.equal(desktop.heroFits, true);
+assert.deepEqual(desktop.heroFrame, { left: 0, top: 0, right: desktop.viewport.width, bottom: desktop.viewport.height });
 assert.ok(desktop.headlineGap >= 0);
 assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
@@ -136,6 +139,27 @@ const waterMoved = await evaluate(`(() => {
 assert.notEqual(waterMoved.x, waterInitial.x);
 assert.equal(waterMoved.pointer, "active");
 assert.equal(waterMoved.ctaIsTopmost, true);
+
+await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 4, y: 200 });
+await delay(180);
+const waterAtEdge = await evaluate(`(() => {
+  const hero = document.querySelector('.cinema-hero');
+  return {
+    edgeOpacity: Number.parseFloat(hero.style.getPropertyValue('--water-edge-opacity')),
+    pointer: hero.dataset.waterPointer,
+  };
+})()`);
+assert.equal(waterAtEdge.pointer, "active");
+assert.ok(Number.isFinite(waterAtEdge.edgeOpacity));
+assert.ok(waterAtEdge.edgeOpacity <= 0.1, `Water edge opacity stayed at ${waterAtEdge.edgeOpacity}`);
+
+await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 410, y: 280 });
+await delay(180);
+const waterAwayFromEdge = await evaluate(
+  `Number.parseFloat(document.querySelector('.cinema-hero').style.getPropertyValue('--water-edge-opacity'))`,
+);
+assert.ok(Number.isFinite(waterAwayFromEdge));
+assert.ok(waterAwayFromEdge >= 0.95);
 
 await evaluate(`window.scrollBy({ top: 240, behavior: 'instant' }); true`);
 await delay(180);
