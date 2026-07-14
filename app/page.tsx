@@ -7,7 +7,7 @@ import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
 import { WaterInterface } from "./components/WaterInterface";
-import { copy, instagramUrl, type Language } from "./site-copy";
+import { copy, happyTriFriendsUrl, instagramUrl, type Language } from "./site-copy";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -92,6 +92,15 @@ export default function Home() {
             <p>{t.heroPrice}</p>
             <p>{t.capacity}</p>
           </div>
+          <a
+            className="htf-affiliation htf-affiliation--mobile"
+            href={happyTriFriendsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.affiliationAriaLabel}
+          >
+            {t.affiliationLabel}<span aria-hidden="true">↗</span>
+          </a>
           <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
             {t.cta}<span aria-hidden="true">↗</span>
           </a>
@@ -101,6 +110,15 @@ export default function Home() {
           <ul>
             {t.documentaryNotes.map((note) => <li key={note}>{note}</li>)}
           </ul>
+          <a
+            className="htf-affiliation htf-affiliation--desktop"
+            href={happyTriFriendsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.affiliationAriaLabel}
+          >
+            {t.affiliationLabel}<span aria-hidden="true">↗</span>
+          </a>
         </div>
       </WaterInterface>
 
@@ -222,7 +240,19 @@ export default function Home() {
           <Reveal className="coach-note" delay={120}>
             <p className="eyebrow">{t.coachLabel}</p>
             <h3>{t.coachTitle}</h3>
-            <p>{t.coachText}</p>
+            <p>
+              {t.coachTextBeforeClub}
+              <a
+                className="htf-inline-link"
+                href={happyTriFriendsUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.affiliationAriaLabel}
+              >
+                Happy Tri Friends
+              </a>
+              {t.coachTextAfterClub}
+            </p>
             <a className="text-link" href={instagramUrl} target="_blank" rel="noreferrer">
               {t.coachLink}<span aria-hidden="true">↗</span>
             </a>
@@ -251,9 +281,10 @@ export default function Home() {
           <p className="offer-price">{t.price}</p>
         </Reveal>
         <div className="offer-detail">
-          <div>
+          <div className="price-facts">
             {t.priceFacts.map((fact) => <p key={fact}>{fact}</p>)}
           </div>
+          <p className="pricing-clarification">{t.pricingClarification}</p>
           <p className="offer-note">{t.pricingText}</p>
         </div>
       </section>

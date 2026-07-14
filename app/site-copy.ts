@@ -1,6 +1,7 @@
 export type Language = "uk" | "en";
 
 export const instagramUrl = "https://www.instagram.com/kachamba_swim/";
+export const happyTriFriendsUrl = "https://happytrifriends.com";
 
 export const copy = {
   uk: {
@@ -10,8 +11,8 @@ export const copy = {
     label: "Онлайн-ведення з плавання · Україна та світ",
     headlineLines: ["Плавання, яке", "підлаштоване під ваше життя."],
     offer: "Персональне онлайн-ведення з плавання",
-    heroPrice: "Повне ведення — від $100/місяць",
-    price: "Від $100/місяць",
+    heroPrice: "Повне ведення — від 4 500 грн/місяць",
+    price: "Від 4 500 грн/місяць",
     capacity: "До 8–10 спортсменів одночасно",
     cta: "Обговорити формат",
     heroText:
@@ -19,6 +20,8 @@ export const copy = {
     proof: ["7 років методики", "5000+ годин персональної роботи"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     documentaryNotes: ["Дорослі новачки", "Триатлети-аматори"],
+    affiliationLabel: "COACH AT HAPPY TRI FRIENDS",
+    affiliationAriaLabel: "Happy Tri Friends — відкрити сайт клубу в новій вкладці",
     audienceLabel: "Дві стартові точки",
     audienceTitle: "Один процес. Дві різні стартові точки.",
     audiences: [
@@ -74,16 +77,19 @@ export const copy = {
     practiceCaptions: ["Робота над відчуттям води", "Тренер поруч із процесом", "Команда HTF на старті", "Досвід відкритої води"],
     coachLabel: "Тренер",
     coachTitle: "Микита Качалаба",
-    coachText:
-      "Тренер з плавання та тренер HTF — київського триатлонного клубу. Допомагаю дорослим збудувати техніку й тренувальний ритм, які витримують звичайне життя.",
+    coachTextBeforeClub: "Тренер з плавання та тренер київського триатлонного клубу ",
+    coachTextAfterClub:
+      ". Допомагаю дорослим збудувати техніку й тренувальний ритм, які витримують звичайне життя.",
     coachLink: "Дивитися тренування в Instagram",
     pricingLabel: "Вартість",
     pricingTitle: "Персональна робота з прозорою логікою ціни.",
     priceFacts: [
-      "План з плавання: 2 тренування щотижня — $80/місяць",
-      "Силовий план — +$20/місяць; разом із двома плаваннями — від $100",
-      "Повне ведення: 3 тренування з плавання + зал — від $140/місяць",
+      "План з плавання: 2 тренування щотижня — 3 600 грн/місяць",
+      "Силовий план — +900 грн/місяць; разом із двома плаваннями — від 4 500 грн/місяць",
+      "Повне ведення: 3 тренування з плавання + зал — від 6 300 грн/місяць",
     ],
+    pricingClarification:
+      "Вартість персонального ведення. Басейн і клубні абонементи оплачуються окремо.",
     pricingText:
       "Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
     finalTitle: "Якщо хочете плисти точніше — почнемо з розмови.",
@@ -107,6 +113,8 @@ export const copy = {
     proof: ["7 years of methodology", "5,000+ hours of personal coaching"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     documentaryNotes: ["Adult beginners", "Amateur triathletes"],
+    affiliationLabel: "COACH AT HAPPY TRI FRIENDS",
+    affiliationAriaLabel: "Happy Tri Friends — open the club website in a new tab",
     audienceLabel: "Two starting points",
     audienceTitle: "One process. Two different starting points.",
     audiences: [
@@ -162,8 +170,9 @@ export const copy = {
     practiceCaptions: ["Building a feel for the water", "Coaching beside the process", "HTF team at a race", "Open-water experience"],
     coachLabel: "Coach",
     coachTitle: "Mykyta Kachalaba",
-    coachText:
-      "Swimming coach and coach at HTF, a Kyiv triathlon club. I help adults build technique and a training rhythm that can hold up in everyday life.",
+    coachTextBeforeClub: "Swimming coach and coach at ",
+    coachTextAfterClub:
+      ", a Kyiv triathlon club. I help adults build technique and a training rhythm that can hold up in everyday life.",
     coachLink: "See training on Instagram",
     pricingLabel: "Pricing",
     pricingTitle: "Personal work with transparent pricing logic.",
@@ -172,6 +181,8 @@ export const copy = {
       "Strength plan — +$20/month; with two swim sessions — from $100",
       "Full coaching: three swim sessions + strength — from $140/month",
     ],
+    pricingClarification:
+      "Pricing covers personal coaching. Pool access and club memberships are paid separately.",
     pricingText:
       "Your final format depends on your experience, goal and the number of sessions that genuinely fit into your week.",
     finalTitle: "If you want to swim with more precision, let us start with a conversation.",
