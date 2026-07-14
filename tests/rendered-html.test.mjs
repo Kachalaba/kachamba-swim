@@ -1,5 +1,35 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+
+const siteCopySource = await readFile(
+  new URL("../app/site-copy.ts", import.meta.url),
+  "utf8",
+);
+
+function localeSource(language, nextLanguage) {
+  const end = nextLanguage
+    ? `\\n  \\},\\n  ${nextLanguage}:\\s*\\{`
+    : "\\n  \\},\\n\\} as const;";
+  const match = siteCopySource.match(
+    new RegExp(`\\n  ${language}:\\s*\\{([\\s\\S]*?)${end}`),
+  );
+  assert.ok(match, `Expected to find the ${language} locale in app/site-copy.ts`);
+  return match[1];
+}
+
+function pricingFields(source) {
+  const scalarFields = [...source.matchAll(
+    /\b(?:heroPrice|price|pricingText|pricingClarification):\s*"([^"]*)"/g,
+  )].map((match) => match[1]);
+  const priceFacts = source.match(/\bpriceFacts:\s*\[([\s\S]*?)\n\s*\],/);
+  assert.ok(priceFacts, "Expected to find priceFacts in locale source");
+
+  return [
+    ...scalarFields,
+    ...[...priceFacts[1].matchAll(/"([^"]*)"/g)].map((match) => match[1]),
+  ];
+}
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -19,10 +49,15 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /Персональне онлайн-ведення з плавання/);
-  assert.match(html, /Повне ведення — від \$100\/місяць/);
-  assert.match(html, /Від \$100\/місяць/);
-  assert.match(html, /План з плавання: 2 тренування щотижня — \$80\/місяць/);
-  assert.match(html, /Силовий план — \+\$20\/місяць/);
+  assert.match(html, /Повне ведення — від 4 500 грн\/місяць/);
+  assert.match(html, /Від 4 500 грн\/місяць/);
+  assert.match(html, /2 тренування щотижня — 3 600 грн\/місяць/);
+  assert.match(html, /Силовий план — \+900 грн\/місяць/);
+  assert.match(html, /від 6 300 грн\/місяць/);
+  assert.match(
+    html,
+    /Вартість персонального ведення\. Басейн і клубні абонементи оплачуються окремо\./,
+  );
   assert.match(html, /Для дорослих, які починають/);
   assert.match(html, /Для триатлетів-любителів/);
   assert.match(html, /До 8–10 спортсменів одночасно/);
@@ -72,4 +107,37 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   ) ?? [];
   assert.equal(conversionLinks.length, 4);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/);
+});
+
+test("server-renders the Happy Tri Friends affiliation with safe external links", async () => {
+  const response = await render();
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  const htfLinks = html.match(
+    /href="https:\/\/happytrifriends\.com" target="_blank" rel="noreferrer"/g,
+  ) ?? [];
+  assert.equal(htfLinks.length, 3);
+  assert.match(html, /COACH AT HAPPY TRI FRIENDS/);
+  assert.match(html, /київського триатлонного клубу[\s\S]*Happy Tri Friends/);
+});
+
+test("keeps pricing localized by language in the source copy", () => {
+  const ukrainianSource = localeSource("uk", "en");
+  const englishSource = localeSource("en");
+
+  assert.match(englishSource, /\$80\/month/);
+  assert.match(englishSource, /\$100/);
+  assert.match(englishSource, /\$140\/month/);
+  assert.match(
+    englishSource,
+    /Pricing covers personal coaching\. Pool access and club memberships are paid separately\./,
+  );
+
+  for (const field of pricingFields(ukrainianSource)) {
+    assert.doesNotMatch(field, /\$/);
+  }
+  for (const field of pricingFields(englishSource)) {
+    assert.doesNotMatch(field, /грн/);
+  }
 });
