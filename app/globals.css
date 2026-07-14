@@ -157,7 +157,7 @@ button:focus-visible, a:focus-visible {
   position: relative;
   min-height: 100svh;
   margin: 0;
-  overflow: hidden;
+  overflow: clip;
   background: var(--water);
   isolation: isolate;
   touch-action: pan-y;
@@ -350,8 +350,7 @@ button:focus-visible, a:focus-visible {
 }
 .htf-affiliation:hover,
 .htf-affiliation:focus-visible { color: var(--htf-gold); }
-.htf-affiliation:focus-visible,
-.htf-inline-link:focus-visible { outline-color: var(--htf-gold); }
+.htf-affiliation:focus-visible { outline-color: var(--htf-gold); }
 .htf-affiliation:hover::after,
 .htf-affiliation:focus-visible::after { transform: scaleX(1); }
 .htf-affiliation--mobile { display: none; }
@@ -617,9 +616,10 @@ button:focus-visible, a:focus-visible {
 }
 .htf-inline-link:hover,
 .htf-inline-link:focus-visible {
-  color: var(--htf-gold);
+  color: var(--ink);
   text-decoration-color: var(--htf-gold);
 }
+.htf-inline-link:focus-visible { outline-color: var(--ink); }
 .text-link { display: inline-flex; gap: 14px; margin-top: 42px; border-bottom: 1px solid #126b69; padding-bottom: 8px; color: var(--ink); font-size: 12px; }
 .text-link span { color: #126b69; }
 .documentary-gallery {

@@ -127,9 +127,7 @@ const desktop = await evaluate(`(() => {
     })),
     priceText: document.querySelector('#price').textContent,
     affiliation: {
-      railDisplay: getComputedStyle(document.querySelector('.documentary-rail')).display,
-      desktopDisplay: getComputedStyle(document.querySelector('.htf-affiliation--desktop')).display,
-      mobileDisplay: getComputedStyle(document.querySelector('.htf-affiliation--mobile')).display,
+      railVisible: document.querySelector('.documentary-rail').getClientRects().length > 0,
       desktopVisible: document.querySelector('.htf-affiliation--desktop').getClientRects().length > 0,
       mobileVisible: document.querySelector('.htf-affiliation--mobile').getClientRects().length > 0,
       desktopWithinHero: (() => {
@@ -150,9 +148,7 @@ assert.equal(desktop.routeActive, "0");
 assert.ok(desktop.videos.every((video) => !video.hasSrc && video.paused && video.preload === "none"));
 assert.match(desktop.priceText, /4 500 грн\/місяць/);
 assert.doesNotMatch(desktop.priceText, /\$/);
-assert.equal(desktop.affiliation.railDisplay, "flex");
-assert.notEqual(desktop.affiliation.desktopDisplay, "none");
-assert.equal(desktop.affiliation.mobileDisplay, "none");
+assert.equal(desktop.affiliation.railVisible, true);
 assert.equal(desktop.affiliation.desktopVisible, true);
 assert.equal(desktop.affiliation.mobileVisible, false);
 assert.equal(desktop.affiliation.desktopWithinHero, true);
@@ -221,6 +217,16 @@ const desktopFocus = await evaluate(`(() => {
   const link = document.activeElement;
   const style = getComputedStyle(link);
   const line = getComputedStyle(link, '::after');
+  const hero = document.querySelector('.cinema-hero').getBoundingClientRect();
+  const ancestorScrollLefts = [];
+  for (let node = link.parentElement; node; node = node.parentElement) {
+    ancestorScrollLefts.push({
+      name: node.id || node.className || node.tagName,
+      scrollLeft: node.scrollLeft,
+      scrollWidth: node.scrollWidth,
+      clientWidth: node.clientWidth,
+    });
+  }
   return {
     focusVisible: link.matches(':focus-visible'),
     color: style.color,
@@ -233,6 +239,10 @@ const desktopFocus = await evaluate(`(() => {
     scrollX: window.scrollX,
     scrollY: window.scrollY,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    heroFrame: { left: hero.left, top: hero.top, right: hero.right, bottom: hero.bottom },
+    viewport: { width: window.innerWidth, height: window.innerHeight },
+    visualViewportOffsetLeft: window.visualViewport?.offsetLeft ?? 0,
+    ancestorScrollLefts,
   };
 })()`);
 assert.equal(desktopFocus.focusVisible, true);
@@ -246,6 +256,14 @@ assert.equal(desktopFocus.lineTransitionProperty, "transform");
 assert.equal(desktopFocus.scrollX, 0);
 assert.equal(desktopFocus.scrollY, 0);
 assert.equal(desktopFocus.overflow, 0);
+assert.deepEqual(desktopFocus.heroFrame, {
+  left: 0,
+  top: 0,
+  right: desktopFocus.viewport.width,
+  bottom: desktopFocus.viewport.height,
+});
+assert.equal(desktopFocus.visualViewportOffsetLeft, 0);
+assert.ok(desktopFocus.ancestorScrollLefts.every(({ scrollLeft }) => scrollLeft === 0));
 await screenshot("/tmp/kachamba-desktop-htf-focus.png");
 
 await evaluate(`document.querySelector('[data-method-rail]').scrollIntoView({ block: 'center' }); true`);
@@ -334,6 +352,57 @@ assert.equal(await evaluate(`document.querySelector('#system .cinematic-media im
 await send("Network.setBlockedURLs", { urls: [] });
 await navigate();
 
+const inlineBefore = await evaluate(`(() => {
+  const rect = document.querySelector('.htf-inline-link').getBoundingClientRect();
+  return {
+    width: rect.width,
+    height: rect.height,
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  };
+})()`);
+await focusByKeyboard(".htf-inline-link");
+await delay(300);
+const inlineFocus = await evaluate(`(() => {
+  const link = document.activeElement;
+  const rect = link.getBoundingClientRect();
+  const style = getComputedStyle(link);
+  return {
+    focusVisible: link.matches(':focus-visible'),
+    color: style.color,
+    outlineColor: style.outlineColor,
+    outlineStyle: style.outlineStyle,
+    outlineWidth: style.outlineWidth,
+    textDecorationColor: style.textDecorationColor,
+    backgroundColor: style.backgroundColor,
+    display: style.display,
+    padding: [style.paddingTop, style.paddingRight, style.paddingBottom, style.paddingLeft],
+    width: rect.width,
+    height: rect.height,
+    scrollX: window.scrollX,
+    visualViewportOffsetLeft: window.visualViewport?.offsetLeft ?? 0,
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  };
+})()`);
+assert.equal(inlineFocus.focusVisible, true);
+assert.equal(inlineFocus.color, "rgb(6, 24, 29)");
+assert.equal(inlineFocus.outlineColor, "rgb(6, 24, 29)");
+assert.notEqual(inlineFocus.outlineStyle, "none");
+assert.ok(Number.parseFloat(inlineFocus.outlineWidth) >= 2);
+assert.equal(inlineFocus.textDecorationColor, "rgb(251, 191, 36)");
+assert.equal(inlineFocus.backgroundColor, "rgba(0, 0, 0, 0)");
+assert.equal(inlineFocus.display, "inline");
+assert.deepEqual(inlineFocus.padding, ["0px", "0px", "0px", "0px"]);
+assert.equal(inlineFocus.width, inlineBefore.width);
+assert.equal(inlineFocus.height, inlineBefore.height);
+assert.equal(inlineFocus.scrollX, 0);
+assert.equal(inlineFocus.visualViewportOffsetLeft, 0);
+assert.equal(inlineFocus.overflow, inlineBefore.overflow);
+assert.equal(inlineFocus.overflow, 0);
+await evaluate(`document.activeElement.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }); true`);
+await delay(800);
+await screenshot("/tmp/kachamba-coach-link-focus.png");
+await navigate();
+
 await evaluate(`([...document.querySelectorAll('.language-switch button')].find((button) => button.textContent === 'EN')).click(); true`);
 await delay(200);
 const english = await evaluate(`({
@@ -382,22 +451,24 @@ for (const [width, height, path] of [
       headlineGap: outlineTitle.top - filledTitle.bottom,
       viewport: document.documentElement.clientWidth,
       affiliation: (() => {
+        const facts = document.querySelector('.hero-facts');
         const desktopLink = document.querySelector('.htf-affiliation--desktop');
         const mobileLink = document.querySelector('.htf-affiliation--mobile');
         const cta = document.querySelector('.cinema-hero-copy .button');
+        const factsBounds = facts.getBoundingClientRect();
         const mobileBounds = mobileLink.getBoundingClientRect();
         const ctaBounds = cta.getBoundingClientRect();
         return {
-          railDisplay: getComputedStyle(document.querySelector('.documentary-rail')).display,
-          desktopDisplay: getComputedStyle(desktopLink).display,
-          mobileDisplay: getComputedStyle(mobileLink).display,
+          railVisible: document.querySelector('.documentary-rail').getClientRects().length > 0,
           desktopVisible: desktopLink.getClientRects().length > 0,
           mobileVisible: mobileLink.getClientRects().length > 0,
           desktopWithinHero: (() => {
             const rect = desktopLink.getBoundingClientRect();
             return rect.top >= hero.top && rect.right <= hero.right && rect.bottom <= hero.bottom && rect.left >= hero.left;
           })(),
+          factsBeforeMobile: Boolean(facts.compareDocumentPosition(mobileLink) & Node.DOCUMENT_POSITION_FOLLOWING),
           mobileBeforeCta: Boolean(mobileLink.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING),
+          factsSeparatedFromMobile: factsBounds.bottom <= mobileBounds.top,
           mobileSeparatedFromCta: mobileBounds.bottom <= ctaBounds.top,
           ctaHeight: ctaBounds.height,
           visibleLinks: [...document.querySelectorAll('a[href^="https://happytrifriends.com"]')]
@@ -413,19 +484,18 @@ for (const [width, height, path] of [
   assert.ok(mobile.headlineGap >= 0);
   assertSafeHtfLinks(mobile.affiliation.visibleLinks);
   if (width <= 760) {
-    assert.equal(mobile.affiliation.railDisplay, "none");
+    assert.equal(mobile.affiliation.railVisible, false);
     assert.equal(mobile.affiliation.desktopVisible, false);
-    assert.equal(mobile.affiliation.mobileDisplay, "flex");
     assert.equal(mobile.affiliation.mobileVisible, true);
+    assert.equal(mobile.affiliation.factsBeforeMobile, true);
     assert.equal(mobile.affiliation.mobileBeforeCta, true);
+    assert.equal(mobile.affiliation.factsSeparatedFromMobile, true);
     assert.equal(mobile.affiliation.mobileSeparatedFromCta, true);
     assert.ok(mobile.affiliation.ctaHeight >= 44);
   } else {
-    assert.equal(mobile.affiliation.railDisplay, "flex");
-    assert.notEqual(mobile.affiliation.desktopDisplay, "none");
+    assert.equal(mobile.affiliation.railVisible, true);
     assert.equal(mobile.affiliation.desktopVisible, true);
     assert.equal(mobile.affiliation.desktopWithinHero, true);
-    assert.equal(mobile.affiliation.mobileDisplay, "none");
     assert.equal(mobile.affiliation.mobileVisible, false);
   }
   if (width === 333) await screenshot("/tmp/kachamba-mobile-333.png");
@@ -543,4 +613,4 @@ assert.deepEqual(browserErrors, []);
 await send("Emulation.setEmulatedMedia", { media: "screen", features: [] });
 socket.close();
 
-console.log(JSON.stringify({ desktop, desktopFocus, method, coachingStart, coachingLater, english, reducedAffiliation, reduced }, null, 2));
+console.log(JSON.stringify({ desktop, desktopFocus, inlineFocus, method, coachingStart, coachingLater, english, reducedAffiliation, reduced }, null, 2));
