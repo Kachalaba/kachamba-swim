@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CinematicMedia } from "./components/CinematicMedia";
+import { MethodRail } from "./components/MethodRail";
 import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
@@ -130,7 +131,7 @@ export default function Home() {
         <Reveal className="method-proof" delay={100}>
           {t.proof.map((fact) => <p key={fact}>{fact}</p>)}
         </Reveal>
-        <ProgressRail label={t.methodLine} items={t.methodSteps} mode="method" />
+        <MethodRail label={t.methodLine} items={t.methodSteps} />
         <p className="sequence-line">{t.methodLine}</p>
       </section>
 

@@ -28,7 +28,12 @@ export const copy = {
     methodTitle: "Точність починається не з темпу.",
     methodText:
       "Спочатку прибираємо зайву напругу й вибудовуємо відчуття води. Швидкість приходить як наслідок руху, який можна повторити.",
-    methodSteps: ["Дихання", "Техніка", "Темп", "Відновлення"],
+    methodSteps: [
+      ["Дихання", "Прибираємо затримку й паніку: видих у воду стає ритмом руху."],
+      ["Техніка", "Збираємо положення тіла, захват і ковзання без зайвої напруги."],
+      ["Темп", "Знаходимо швидкість, яку можна повторити — без боротьби з водою."],
+      ["Відновлення", "Дозуємо навантаження так, щоб наступне тренування додавало, а не ламало."],
+    ],
     methodLine: "Дихання → Техніка → Темп → Відновлення",
     guidedLabel: "Ведення замість здогадок",
     guidedTitle: "Після тренування не треба вгадувати, що змінити.",
@@ -110,7 +115,12 @@ export const copy = {
     methodTitle: "Precision does not begin with pace.",
     methodText:
       "First we remove unnecessary tension and build a feel for the water. Speed follows from movement you can repeat.",
-    methodSteps: ["Breathing", "Technique", "Pace", "Recovery"],
+    methodSteps: [
+      ["Breathing", "We remove breath-holding and panic until exhaling into the water becomes the rhythm of the stroke."],
+      ["Technique", "We align body position, catch and glide without adding unnecessary tension."],
+      ["Pace", "We find a speed you can repeat, without fighting the water."],
+      ["Recovery", "We dose the work so the next session builds you up instead of breaking you down."],
+    ],
     methodLine: "Breathing → Technique → Pace → Recovery",
     guidedLabel: "Guidance instead of guessing",
     guidedTitle: "After a session, you do not have to guess what to change.",

@@ -31,6 +31,15 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /7 років методики/);
   assert.match(html, /5000\+ годин персональної роботи/);
   assert.match(html, /Дихання → Техніка → Темп → Відновлення/);
+  assert.match(html, /data-method-rail/);
+  assert.match(html, /role="tablist"/);
+  assert.equal((html.match(/role="tab"/g) ?? []).length, 4);
+  assert.equal((html.match(/data-method-panel/g) ?? []).length, 4);
+  assert.match(html, /Прибираємо затримку й паніку: видих у воду стає ритмом руху\./);
+  assert.match(html, /Збираємо положення тіла, захват і ковзання без зайвої напруги\./);
+  assert.match(html, /Знаходимо швидкість, яку можна повторити — без боротьби з водою\./);
+  assert.match(html, /Дозуємо навантаження так, щоб наступне тренування додавало, а не ламало\./);
+  assert.doesNotMatch(html, /data-progress-mode="method"/);
   assert.match(html, /План → Дія → Відеорозбір → Корекція → Наступний блок/);
   assert.match(html, /data-video-src="\/media\/coaching-loop\.mp4"/);
   assert.match(html, /poster="\/media\/coaching-loop-poster\.webp"/);
@@ -50,7 +59,6 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.doesNotMatch(html, /Запитати про місце/);
   assert.match(html, /data-revealed="false"/);
   assert.match(html, /data-active-route="0"/);
-  assert.match(html, /data-progress-mode="method"/);
   assert.match(html, /data-progress-mode="coaching"/);
   assert.equal((html.match(/data-surface="true"/g) ?? []).length, 5);
   assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
