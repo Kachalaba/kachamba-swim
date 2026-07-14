@@ -62,6 +62,10 @@ async function setViewport(width, height) {
     screenWidth: width,
     screenHeight: height,
   });
+  await send("Emulation.setTouchEmulationEnabled", {
+    enabled: width <= 760,
+    maxTouchPoints: width <= 760 ? 5 : 1,
+  });
 }
 
 async function navigate() {
@@ -174,10 +178,25 @@ assert.equal(methodAfterHover.active, "2");
 assert.equal(methodAfterHover.height, methodBefore.height);
 assert.match(methodAfterHover.visible, /Збираємо положення тіла/);
 assert.notEqual(methodAfterHover.transform, "none");
+
+await evaluate(`document.querySelector('#method-tab-2').focus(); true`);
+await send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowRight", code: "ArrowRight" });
+await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight" });
+await delay(120);
+const keyboardMethod = await evaluate(`(() => ({
+  active: document.querySelector('[data-method-rail]').dataset.activeStep,
+  focused: document.activeElement.id,
+  visible: document.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent,
+}))()`);
+assert.deepEqual(keyboardMethod, {
+  active: "3",
+  focused: "method-tab-3",
+  visible: "Знаходимо швидкість, яку можна повторити — без боротьби з водою.",
+});
 assert.equal(await evaluate(`document.querySelector('#method').dataset.surfacePass`), "true");
 await screenshot("/tmp/kachamba-method.png");
 
-const method = { before: methodBefore, afterHover: methodAfterHover };
+const method = { before: methodBefore, afterHover: methodAfterHover, keyboard: keyboardMethod };
 
 await evaluate(`document.querySelector('[data-progress-mode="coaching"]').scrollIntoView({ block: 'center' }); true`);
 await delay(700);
@@ -218,6 +237,10 @@ const english = await evaluate(`({
   instagram: [...document.querySelectorAll('a[href="https://www.instagram.com/kachamba_swim/"]')].length,
 })`);
 assert.deepEqual(english, { lang: "en", filled: "Swimming that", outline: "adapts to your life.", instagram: 4 });
+assert.equal(
+  await evaluate(`document.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent`),
+  "We remove breath-holding and panic until exhaling into the water becomes the rhythm of the stroke.",
+);
 
 for (const [width, height, path] of [
   [1470, 768, null],
@@ -240,7 +263,44 @@ for (const [width, height, path] of [
   assert.equal(mobile.overflow, 0);
   assert.equal(mobile.heroFits, true);
   assert.ok(mobile.outlineRight <= mobile.viewport + 1);
-  if (path) await screenshot(path);
+  if (path) {
+    await evaluate(`document.querySelector('#method-tab-4').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
+    await delay(180);
+    const mobilePanelHeight = await evaluate(`document.querySelector('.method-detail-stack').getBoundingClientRect().height`);
+    const recoveryRect = await evaluate(`(() => {
+      const rect = document.querySelector('#method-tab-4').getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    })()`);
+    const recoveryHit = await evaluate(`(() => {
+      const rect = document.querySelector('#method-tab-4').getBoundingClientRect();
+      return document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)?.closest('button')?.id;
+    })()`);
+    assert.equal(recoveryHit, "method-tab-4");
+    await send("Emulation.setTouchEmulationEnabled", { enabled: false, maxTouchPoints: 1 });
+    await send("Input.dispatchMouseEvent", {
+      type: "mousePressed",
+      button: "left",
+      clickCount: 1,
+      ...recoveryRect,
+    });
+    await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+    await send("Input.dispatchMouseEvent", {
+      type: "mouseReleased",
+      button: "left",
+      clickCount: 1,
+      ...recoveryRect,
+    });
+    await delay(180);
+    const mobileMethod = await evaluate(`(() => ({
+      active: document.querySelector('[data-method-rail]').dataset.activeStep,
+      height: document.querySelector('.method-detail-stack').getBoundingClientRect().height,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }))()`);
+    assert.equal(mobileMethod.active, "4");
+    assert.equal(mobileMethod.height, mobilePanelHeight);
+    assert.equal(mobileMethod.overflow, 0);
+    await screenshot(path);
+  }
 }
 
 await send("Emulation.setEmulatedMedia", {
@@ -261,6 +321,13 @@ assert.equal(reduced.waterState, "reduced");
 assert.equal(reduced.surfaceDisplay, "none");
 assert.ok(reduced.videos.every((video) => !video.hasSrc && video.paused));
 assert.ok(reduced.rails.every((complete) => complete === "true"));
+await evaluate(`document.querySelector('#method-tab-2').click(); true`);
+assert.equal(await evaluate(`document.querySelector('[data-method-rail]').dataset.activeStep`), "2");
+assert.ok(
+  Number.parseFloat(
+    await evaluate(`getComputedStyle(document.querySelector('.method-waterline')).transitionDuration`),
+  ) <= 0.01,
+);
 assert.deepEqual(browserErrors, []);
 
 await send("Emulation.setEmulatedMedia", { media: "screen", features: [] });
