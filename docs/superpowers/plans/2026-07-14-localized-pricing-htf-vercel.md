@@ -499,7 +499,7 @@ git log --oneline --decorate -8
 
 Expected: no whitespace errors, only intended files changed, and all implementation commits are present on `main`.
 
-- [ ] **Step 5: Push the approved work to GitHub main**
+- [x] **Step 5: Push the approved work to GitHub main**
 
 Run:
 
@@ -517,3 +517,5 @@ Check that:
 - Vercel no longer reports a missing `.next` directory.
 - The Vercel deployment loads successfully at its production URL if the URL is available.
 - The existing Sites deployment still builds from the vinext path; publish it through the Sites workflow only if that workflow is available and authorized in the current environment.
+
+Verification note (2026-07-15): the Vercel connector is not connected, no `.vercel/project.json` or Vercel CLI is available, and the separate GitHub `main` plus Sites version 7 remain at `3dfdb5d`. No repository-local Sites publish command exists, so the external deployment step remains unchecked for controller handoff.
