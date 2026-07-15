@@ -518,4 +518,4 @@ Check that:
 - The Vercel deployment loads successfully at its production URL if the URL is available.
 - The existing Sites deployment still builds from the vinext path; publish it through the Sites workflow only if that workflow is available and authorized in the current environment.
 
-Verified final delivery state (2026-07-15): GitHub `main` contains `be2c3ff`, Vercel production is live at `https://kachamba-swim.vercel.app/`, and OpenAI Sites version 8 is deployed at `https://kachalaba-personal-swim.kamamber.chatgpt.site` from the same source.
+Verified final delivery state (2026-07-15): GitHub `main` contains the completed implementation, Vercel production is live at `https://kachamba-swim.vercel.app/`, and the current OpenAI Sites production is live at `https://kachalaba-personal-swim.kamamber.chatgpt.site` from the corresponding `main` source.
