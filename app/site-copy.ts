@@ -76,7 +76,7 @@ export const copy = {
     practiceTitle: "Роботу видно у воді.",
     practiceText:
       "Басейн, старт, відкрита вода, робота поруч із спортсменом. Саме з цього контексту виростає план, який витримує реальність.",
-    practiceCaptions: ["Робота над відчуттям води", "Тренер поруч із процесом", "Команда HTF на старті", "Досвід відкритої води"],
+    practiceCaptions: ["Робота над відчуттям води", "Тренер поруч із процесом", "Команда на старті", "Досвід відкритої води"],
     coachLabel: "Тренер",
     coachTitle: "Микита Качалаба",
     coachTextBeforeClub: "Тренер з плавання та тренер київського триатлонного клубу ",
@@ -173,7 +173,7 @@ export const copy = {
     practiceTitle: "The work is visible in the water.",
     practiceText:
       "Pool sessions, race starts, open water, and coaching beside the athlete. This is the context behind a plan that can withstand real life.",
-    practiceCaptions: ["Building a feel for the water", "Coaching beside the process", "HTF team at a race", "Open-water experience"],
+    practiceCaptions: ["Building a feel for the water", "Coaching beside the process", "Team at the start", "Open-water experience"],
     coachLabel: "Coach",
     coachTitle: "Mykyta Kachalaba",
     coachTextBeforeClub: "Swimming coach and coach at ",

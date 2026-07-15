@@ -72,6 +72,8 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /Уточнюємо наступний блок/);
   assert.match(html, /7 років методики/);
   assert.match(html, /5000\+ годин персональної роботи/);
+  assert.match(html, /Команда на старті/);
+  assert.doesNotMatch(html, /Команда HTF на старті/);
   assert.match(html, /Дихання → Техніка → Темп → Відновлення/);
   assert.match(html, /data-method-rail/);
   assert.match(html, /role="tablist"/);
@@ -171,4 +173,14 @@ test("keeps pricing localized by language in the source copy", () => {
   for (const field of pricingFields(englishSource)) {
     assert.doesNotMatch(field, /грн/);
   }
+});
+
+test("keeps the documentary team caption neutral in both languages", () => {
+  const ukrainianSource = localeSource("uk", "en");
+  const englishSource = localeSource("en");
+
+  assert.match(ukrainianSource, /"Команда на старті"/);
+  assert.doesNotMatch(ukrainianSource, /"Команда HTF на старті"/);
+  assert.match(englishSource, /"Team at the start"/);
+  assert.doesNotMatch(englishSource, /"HTF team at a race"/);
 });
