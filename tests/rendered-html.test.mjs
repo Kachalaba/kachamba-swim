@@ -122,6 +122,24 @@ test("server-renders the Happy Tri Friends affiliation with safe external links"
   assert.match(html, /київського триатлонного клубу[\s\S]*Happy Tri Friends/);
 });
 
+test("server-renders Telegram and WhatsApp as quiet alternative contact channels", async () => {
+  const response = await render();
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  const telegramLinks = html.match(
+    /href="https:\/\/t\.me\/m\/mIj5epmcZGE6" target="_blank" rel="noreferrer"/g,
+  ) ?? [];
+  const whatsappLinks = html.match(
+    /href="https:\/\/wa\.me\/380970353470" target="_blank" rel="noreferrer"/g,
+  ) ?? [];
+
+  assert.equal(telegramLinks.length, 2);
+  assert.equal(whatsappLinks.length, 2);
+  assert.match(html, /Зручніше в месенджері\?/);
+  assert.doesNotMatch(html, />\+380970353470</);
+});
+
 test("keeps pricing localized by language in the source copy", () => {
   const ukrainianSource = localeSource("uk", "en");
   const englishSource = localeSource("en");

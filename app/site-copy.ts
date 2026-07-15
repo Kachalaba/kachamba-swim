@@ -1,6 +1,8 @@
 export type Language = "uk" | "en";
 
 export const instagramUrl = "https://www.instagram.com/kachamba_swim/";
+export const telegramUrl = "https://t.me/m/mIj5epmcZGE6";
+export const whatsappUrl = "https://wa.me/380970353470";
 export const happyTriFriendsUrl = "https://happytrifriends.com";
 
 export const copy = {
@@ -95,6 +97,10 @@ export const copy = {
     finalTitle: "Якщо хочете плисти точніше — почнемо з розмови.",
     finalText:
       "Напишіть в Instagram: ваша ціль, місто або доступ до басейну та скільки тренувань на тиждень вам реально доступно. Я відповім, з якого формату краще почати.",
+    alternativeContact: "Зручніше в месенджері?",
+    contactChannelsLabel: "Альтернативні канали зв’язку",
+    telegramAriaLabel: "Написати Микиті в Telegram — відкриється в новій вкладці",
+    whatsappAriaLabel: "Написати Микиті у WhatsApp — відкриється в новій вкладці",
     footer: "© 2026 Микита Качалаба · Персональне онлайн-ведення з плавання",
   },
   en: {
@@ -188,6 +194,10 @@ export const copy = {
     finalTitle: "If you want to swim with more precision, let us start with a conversation.",
     finalText:
       "Message me on Instagram with your goal, city or pool access, and the number of weekly sessions you can realistically make. I will reply with the best format to start with.",
+    alternativeContact: "Prefer another messenger?",
+    contactChannelsLabel: "Alternative contact channels",
+    telegramAriaLabel: "Message Mykyta on Telegram — opens in a new tab",
+    whatsappAriaLabel: "Message Mykyta on WhatsApp — opens in a new tab",
     footer: "© 2026 Mykyta Kachalaba · Personal online swim coaching",
   },
 } as const;

@@ -7,7 +7,14 @@ import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
 import { WaterInterface } from "./components/WaterInterface";
-import { copy, happyTriFriendsUrl, instagramUrl, type Language } from "./site-copy";
+import {
+  copy,
+  happyTriFriendsUrl,
+  instagramUrl,
+  telegramUrl,
+  whatsappUrl,
+  type Language,
+} from "./site-copy";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -299,12 +306,51 @@ export default function Home() {
           <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
             {t.cta}<span aria-hidden="true">↗</span>
           </a>
+          <nav className="contact-alternatives" aria-label={t.contactChannelsLabel}>
+            <span>{t.alternativeContact}</span>
+            <span className="contact-alternative-links">
+              <a
+                href={telegramUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.telegramAriaLabel}
+              >
+                Telegram
+              </a>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.whatsappAriaLabel}
+              >
+                WhatsApp
+              </a>
+            </span>
+          </nav>
         </Reveal>
       </section>
 
       <footer>
         <span>{t.footer}</span>
-        <a href={instagramUrl} target="_blank" rel="noreferrer">@kachamba_swim</a>
+        <nav className="footer-links" aria-label={t.contactChannelsLabel}>
+          <a href={instagramUrl} target="_blank" rel="noreferrer">Instagram</a>
+          <a
+            href={telegramUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.telegramAriaLabel}
+          >
+            Telegram
+          </a>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.whatsappAriaLabel}
+          >
+            WhatsApp
+          </a>
+        </nav>
       </footer>
     </main>
   );
