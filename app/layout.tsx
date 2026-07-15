@@ -3,11 +3,15 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin", "cyrillic"] });
+const siteUrl = "https://kachalaba.coach";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kachalaba-personal-swim.kamamber.chatgpt.site"),
+  metadataBase: new URL(siteUrl),
   title: "Mykyta Kachalaba — Personal Swim Coaching",
   description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
@@ -15,7 +19,7 @@ export const metadata: Metadata = {
     title: "Mykyta Kachalaba — Personal Swim Coaching",
     description: "Personal online swim coaching by Mykyta Kachalaba: individual swim and strength plans, video review, chat and calls. From $100 per month.",
     type: "website",
-    url: "https://kachalaba-personal-swim.kamamber.chatgpt.site",
+    url: "/",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mykyta Kachalaba — Personal Swim Coaching" }],
   },
   twitter: {

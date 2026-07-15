@@ -6,6 +6,10 @@ const siteCopySource = await readFile(
   new URL("../app/site-copy.ts", import.meta.url),
   "utf8",
 );
+const nextConfigSource = await readFile(
+  new URL("../next.config.ts", import.meta.url),
+  "utf8",
+);
 
 function localeSource(language, nextLanguage) {
   const end = nextLanguage
@@ -100,7 +104,9 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /data-active-route="0"/);
   assert.match(html, /data-progress-mode="coaching"/);
   assert.equal((html.match(/data-surface="true"/g) ?? []).length, 5);
-  assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/kachalaba\.coach\/"/);
+  assert.match(html, /property="og:url" content="https:\/\/kachalaba\.coach\/"/);
+  assert.match(html, /property="og:image" content="https:\/\/kachalaba\.coach\/og\.png"/);
   assert.match(html, /<link[^>]*rel="icon"[^>]*href="[^"]*\/favicon\.svg"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
@@ -138,6 +144,13 @@ test("server-renders Telegram and WhatsApp as quiet alternative contact channels
   assert.equal(whatsappLinks.length, 2);
   assert.match(html, /Зручніше в месенджері\?/);
   assert.doesNotMatch(html, />\+380970353470</);
+});
+
+test("redirects the www host to the canonical domain permanently", () => {
+  assert.match(nextConfigSource, /type:\s*"host"/);
+  assert.match(nextConfigSource, /value:\s*"www\.kachalaba\.coach"/);
+  assert.match(nextConfigSource, /destination:\s*"https:\/\/kachalaba\.coach\/:path\*"/);
+  assert.match(nextConfigSource, /permanent:\s*true/);
 });
 
 test("keeps pricing localized by language in the source copy", () => {
