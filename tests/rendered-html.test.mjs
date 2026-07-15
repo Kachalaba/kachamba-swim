@@ -65,7 +65,8 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /Для дорослих, які починають/);
   assert.match(html, /Для триатлетів-любителів/);
   assert.match(html, /До 8–10 спортсменів одночасно/);
-  assert.match(html, /kachamba_swim/);
+  assert.match(html, /kachalaba_swim/);
+  assert.doesNotMatch(html, /kachamba_swim/);
   assert.match(html, /lang="uk"/);
   assert.match(html, /План → дія → відеозворотний зв’язок → корекція → безперервність/);
   assert.match(html, /Надсилаєте відео й отримуєте зворотний зв’язок/);
@@ -111,7 +112,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /property="og:image" content="https:\/\/kachalaba\.coach\/og\.png"/);
   assert.match(html, /<link[^>]*rel="icon"[^>]*href="[^"]*\/favicon\.svg"/);
   const conversionLinks = html.match(
-    /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
+    /href="https:\/\/www\.instagram\.com\/kachalaba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];
   assert.equal(conversionLinks.length, 4);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/);

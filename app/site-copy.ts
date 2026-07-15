@@ -1,6 +1,6 @@
 export type Language = "uk" | "en";
 
-export const instagramUrl = "https://www.instagram.com/kachamba_swim/";
+export const instagramUrl = "https://www.instagram.com/kachalaba_swim/";
 export const telegramUrl = "https://t.me/m/mIj5epmcZGE6";
 export const whatsappUrl = "https://wa.me/380970353470";
 export const happyTriFriendsUrl = "https://happytrifriends.com";

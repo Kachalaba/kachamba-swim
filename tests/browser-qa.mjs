@@ -49,7 +49,9 @@ const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, mil
 
 async function evaluate(expression) {
   const response = await send("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true });
-  if (response.exceptionDetails) throw new Error(response.exceptionDetails.text);
+  if (response.exceptionDetails) {
+    throw new Error(response.exceptionDetails.exception?.description ?? response.exceptionDetails.text);
+  }
   return response.result.value;
 }
 
@@ -165,6 +167,38 @@ function assertMobilePricingGeometry(geometry, viewport) {
   assert.equal(geometry.overflow, 0, `${viewport}: pricing must not cause horizontal overflow`);
 }
 
+async function readCoachGeometry() {
+  return evaluate(`(() => {
+    const pair = document.querySelector('.practice-film-pair');
+    const media = pair.querySelector('.coach-deck-film');
+    const note = pair.querySelector('.coach-note');
+    const bounds = (element) => {
+      const { left, top, right, bottom, width, height } = element.getBoundingClientRect();
+      return { left, top, right, bottom, width, height };
+    };
+    return {
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      columnGap: Number.parseFloat(getComputedStyle(pair).columnGap),
+      pair: bounds(pair),
+      media: bounds(media),
+      note: bounds(note),
+    };
+  })()`);
+}
+
+function assertCoachGeometry(geometry, viewport) {
+  const visibleGap = geometry.note.left - geometry.media.right;
+  assert.ok(
+    Math.abs(visibleGap - geometry.columnGap) <= 1,
+    `${viewport}: coach video must preserve the designed grid gap before the text`,
+  );
+  assert.ok(
+    geometry.media.left >= geometry.pair.left - 1 && geometry.media.right <= geometry.note.left - 1,
+    `${viewport}: coach video must stay inside its side of the editorial split`,
+  );
+  assert.equal(geometry.overflow, 0, `${viewport}: coach layout must not cause horizontal overflow`);
+}
+
 await send("Page.enable");
 await send("Runtime.enable");
 await send("Network.enable");
@@ -217,6 +251,9 @@ assert.equal(desktop.affiliation.desktopVisible, true);
 assert.equal(desktop.affiliation.mobileVisible, false);
 assert.equal(desktop.affiliation.desktopWithinHero, true);
 assertSafeHtfLinks(desktop.affiliation.visibleLinks);
+
+const desktopCoach = await readCoachGeometry();
+assertCoachGeometry(desktopCoach, "1470x705");
 
 const desktopPricingUk = await readPricingGeometry();
 assertDesktopPricingGeometry(desktopPricingUk, "UK desktop");
@@ -280,7 +317,7 @@ await screenshot("/tmp/kachamba-desktop.png");
 await evaluate(`document.querySelector('.offer-detail').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
 await delay(300);
 await screenshot("/tmp/kachamba-uk-pricing-1470x705.png");
-await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
+await evaluate(`document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo({ top: 0, behavior: 'auto' }); true`);
 await delay(180);
 
 await focusByKeyboard(".htf-affiliation--desktop");
@@ -337,6 +374,7 @@ assert.deepEqual(desktopFocus.heroFrame, {
 assert.equal(desktopFocus.visualViewportOffsetLeft, 0);
 assert.ok(desktopFocus.ancestorScrollLefts.every(({ scrollLeft }) => scrollLeft === 0));
 await screenshot("/tmp/kachamba-desktop-htf-focus.png");
+await evaluate(`document.documentElement.style.scrollBehavior = ''; true`);
 
 await evaluate(`document.querySelector('[data-method-rail]').scrollIntoView({ block: 'center' }); true`);
 await delay(500);
@@ -481,7 +519,7 @@ const english = await evaluate(`({
   lang: document.documentElement.lang,
   filled: document.querySelector('.hero-title-filled').textContent,
   outline: document.querySelector('.hero-title-outline').textContent,
-  instagram: [...document.querySelectorAll('a[href="https://www.instagram.com/kachamba_swim/"]')].length,
+  instagram: [...document.querySelectorAll('a[href="https://www.instagram.com/kachalaba_swim/"]')].length,
   priceText: document.querySelector('#price').textContent,
   visibleHtfLinks: [...document.querySelectorAll('a[href^="https://happytrifriends.com"]')]
     .filter((link) => link.getClientRects().length > 0)

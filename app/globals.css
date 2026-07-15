@@ -601,8 +601,8 @@ button:focus-visible, a:focus-visible {
 .practice { background: var(--pearl); color: var(--ink); border-color: rgba(6, 24, 29, .14); }
 .practice .eyebrow { color: #126b69; }
 .practice .scene-heading > p:last-child { color: rgba(6, 24, 29, .66); }
-.practice-film-pair { display: grid; grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr); gap: clamp(48px, 10vw, 170px); align-items: center; margin-top: clamp(72px, 10vw, 148px); }
-.coach-deck-film { min-height: min(74vw, 820px); aspect-ratio: 4 / 5; }
+.practice-film-pair { display: grid; grid-template-columns: minmax(0, min(50%, 656px)) minmax(0, 1fr); gap: clamp(48px, 5vw, 96px); align-items: center; margin-top: clamp(72px, 10vw, 148px); }
+.coach-deck-film { width: 100%; min-width: 0; min-height: 0; aspect-ratio: 4 / 5; }
 .coach-note { max-width: 620px; }
 .coach-note h3 { margin: 0; font-size: clamp(48px, 6vw, 92px); font-weight: 470; letter-spacing: -.07em; line-height: .9; }
 .coach-note > p:not(.eyebrow) { margin: 30px 0 0; color: rgba(6, 24, 29, .68); font-size: 16px; line-height: 1.6; }
