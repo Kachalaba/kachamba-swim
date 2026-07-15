@@ -101,6 +101,70 @@ function assertSafeHtfLinks(links) {
   }
 }
 
+async function readPricingGeometry() {
+  return evaluate(`(() => {
+    const detail = document.querySelector('.offer-detail');
+    const facts = detail.querySelector('.price-facts');
+    const clarification = detail.querySelector('.pricing-clarification');
+    const note = detail.querySelector('.offer-note');
+    const pricingColumn = detail.querySelector('.offer-pricing') ?? facts;
+    const bounds = (element) => {
+      const { left, top, right, bottom, width, height } = element.getBoundingClientRect();
+      return { left, top, right, bottom, width, height };
+    };
+    return {
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      hasExplicitPricingColumn: pricingColumn.classList.contains('offer-pricing'),
+      factsBeforeClarification: Boolean(facts.compareDocumentPosition(clarification) & Node.DOCUMENT_POSITION_FOLLOWING),
+      clarificationBeforeNote: Boolean(clarification.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING),
+      detail: bounds(detail),
+      pricingColumn: bounds(pricingColumn),
+      facts: bounds(facts),
+      clarification: bounds(clarification),
+      note: bounds(note),
+    };
+  })()`);
+}
+
+function assertDesktopPricingGeometry(geometry, locale) {
+  const { pricingColumn, facts, clarification, note } = geometry;
+  assert.ok(
+    clarification.top >= facts.bottom - 1,
+    `${locale}: pricing clarification must sit below the facts`,
+  );
+  assert.ok(
+    Math.abs(clarification.left - pricingColumn.left) <= 1 && clarification.right <= pricingColumn.right + 1,
+    `${locale}: pricing clarification must stay within the left pricing column`,
+  );
+  assert.ok(
+    note.left >= pricingColumn.right - 1,
+    `${locale}: offer note must stay in the right pricing column`,
+  );
+  assert.ok(
+    note.top >= pricingColumn.top - 1 && note.bottom <= pricingColumn.bottom + 1,
+    `${locale}: offer note must remain in the first pricing grid row`,
+  );
+  assert.equal(geometry.hasExplicitPricingColumn, true, `${locale}: pricing copy must share an explicit left column`);
+  assert.equal(geometry.factsBeforeClarification, true);
+  assert.equal(geometry.clarificationBeforeNote, true);
+  assert.equal(geometry.overflow, 0);
+}
+
+function assertMobilePricingGeometry(geometry, viewport) {
+  const { detail, facts, clarification, note } = geometry;
+  assert.equal(geometry.factsBeforeClarification, true, `${viewport}: facts must precede clarification`);
+  assert.equal(geometry.clarificationBeforeNote, true, `${viewport}: clarification must precede note`);
+  assert.ok(facts.bottom <= clarification.top + 1, `${viewport}: facts and clarification must not overlap`);
+  assert.ok(clarification.bottom <= note.top + 1, `${viewport}: clarification and note must not overlap`);
+  for (const [name, bounds] of Object.entries({ facts, clarification, note })) {
+    assert.ok(
+      bounds.left >= detail.left - 1 && bounds.right <= detail.right + 1,
+      `${viewport}: ${name} must stay within the pricing section`,
+    );
+  }
+  assert.equal(geometry.overflow, 0, `${viewport}: pricing must not cause horizontal overflow`);
+}
+
 await send("Page.enable");
 await send("Runtime.enable");
 await send("Network.enable");
@@ -153,6 +217,9 @@ assert.equal(desktop.affiliation.desktopVisible, true);
 assert.equal(desktop.affiliation.mobileVisible, false);
 assert.equal(desktop.affiliation.desktopWithinHero, true);
 assertSafeHtfLinks(desktop.affiliation.visibleLinks);
+
+const desktopPricingUk = await readPricingGeometry();
+assertDesktopPricingGeometry(desktopPricingUk, "UK desktop");
 
 const waterInitial = await evaluate(`(() => {
   const hero = document.querySelector('.cinema-hero');
@@ -210,6 +277,11 @@ const waterScrolledFill = await evaluate(
 assert.ok(waterScrolledFill > waterInitial.fill);
 await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
 await screenshot("/tmp/kachamba-desktop.png");
+await evaluate(`document.querySelector('.offer-detail').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
+await delay(300);
+await screenshot("/tmp/kachamba-uk-pricing-1470x705.png");
+await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
+await delay(180);
 
 await focusByKeyboard(".htf-affiliation--desktop");
 await delay(300);
@@ -424,18 +496,25 @@ assert.match(english.priceText, /\$100/);
 assert.match(english.priceText, /\$140/);
 assert.doesNotMatch(english.priceText, /грн/);
 assertSafeHtfLinks(english.visibleHtfLinks);
+const desktopPricingEn = await readPricingGeometry();
+assertDesktopPricingGeometry(desktopPricingEn, "EN desktop");
 assert.equal(
   await evaluate(`document.querySelector('[data-method-panel][data-active="true"] .method-detail-copy').textContent`),
   "We remove breath-holding and panic until exhaling into the water becomes the rhythm of the stroke.",
 );
+await evaluate(`document.querySelector('.offer-detail').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
+await delay(300);
+await screenshot("/tmp/kachamba-en-pricing-1470x705.png");
+await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
 await screenshot("/tmp/kachamba-english.png");
 
+const mobilePricingMatrix = [];
 for (const [width, height, path] of [
   [1470, 768, null],
   [1366, 768, null],
   [390, 844, "/tmp/kachamba-mobile.png"],
   [390, 667, null],
-  [333, 667, null],
+  [333, 720, null],
 ]) {
   await setViewport(width, height);
   await navigate();
@@ -483,7 +562,10 @@ for (const [width, height, path] of [
   assert.ok(mobile.outlineRight <= mobile.viewport + 1);
   assert.ok(mobile.headlineGap >= 0);
   assertSafeHtfLinks(mobile.affiliation.visibleLinks);
+  const pricingGeometry = await readPricingGeometry();
   if (width <= 760) {
+    assertMobilePricingGeometry(pricingGeometry, `${width}x${height}`);
+    mobilePricingMatrix.push({ viewport: `${width}x${height}`, ...pricingGeometry });
     assert.equal(mobile.affiliation.railVisible, false);
     assert.equal(mobile.affiliation.desktopVisible, false);
     assert.equal(mobile.affiliation.mobileVisible, true);
@@ -497,6 +579,13 @@ for (const [width, height, path] of [
     assert.equal(mobile.affiliation.desktopVisible, true);
     assert.equal(mobile.affiliation.desktopWithinHero, true);
     assert.equal(mobile.affiliation.mobileVisible, false);
+  }
+  if (width === 390 && height === 844) {
+    await evaluate(`document.querySelector('.offer-detail').scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
+    await delay(300);
+    await screenshot("/tmp/kachamba-uk-pricing-390x844.png");
+    await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' }); true`);
+    await delay(180);
   }
   if (width === 333) await screenshot("/tmp/kachamba-mobile-333.png");
   if (path) {
@@ -613,4 +702,17 @@ assert.deepEqual(browserErrors, []);
 await send("Emulation.setEmulatedMedia", { media: "screen", features: [] });
 socket.close();
 
-console.log(JSON.stringify({ desktop, desktopFocus, inlineFocus, method, coachingStart, coachingLater, english, reducedAffiliation, reduced }, null, 2));
+console.log(JSON.stringify({
+  desktop,
+  desktopPricingUk,
+  desktopPricingEn,
+  mobilePricingMatrix,
+  desktopFocus,
+  inlineFocus,
+  method,
+  coachingStart,
+  coachingLater,
+  english,
+  reducedAffiliation,
+  reduced,
+}, null, 2));

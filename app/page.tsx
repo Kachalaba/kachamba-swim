@@ -281,10 +281,12 @@ export default function Home() {
           <p className="offer-price">{t.price}</p>
         </Reveal>
         <div className="offer-detail">
-          <div className="price-facts">
-            {t.priceFacts.map((fact) => <p key={fact}>{fact}</p>)}
+          <div className="offer-pricing">
+            <div className="price-facts">
+              {t.priceFacts.map((fact) => <p key={fact}>{fact}</p>)}
+            </div>
+            <p className="pricing-clarification">{t.pricingClarification}</p>
           </div>
-          <p className="pricing-clarification">{t.pricingClarification}</p>
           <p className="offer-note">{t.pricingText}</p>
         </div>
       </section>

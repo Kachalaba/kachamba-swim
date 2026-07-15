@@ -662,8 +662,9 @@ button:focus-visible, a:focus-visible {
   white-space: nowrap;
 }
 .offer-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .62fr); gap: clamp(42px, 9vw, 148px); margin-top: clamp(68px, 9vw, 130px); }
-.offer-detail > div p { margin: 0; border-top: 1px solid var(--line); padding: 18px 0; font-size: clamp(15px, 1.35vw, 19px); letter-spacing: -.02em; }
-.offer-detail > div p:last-child { border-bottom: 1px solid var(--line); }
+.price-facts > p { margin: 0; border-top: 1px solid var(--line); padding: 18px 0; font-size: clamp(15px, 1.35vw, 19px); letter-spacing: -.02em; }
+.price-facts > p:last-child { border-bottom: 1px solid var(--line); }
+.pricing-clarification { margin: 24px 0 0; color: var(--mist); font-size: 14px; line-height: 1.6; }
 .offer-note { align-self: end; margin: 0; color: var(--mist); font-size: 15px; line-height: 1.6; }
 
 /* Scene 06 — a quiet final invitation beneath moving light. */

@@ -509,7 +509,7 @@ git push origin main
 
 Confirm the remote branch includes the final commit. The connected Vercel project should then start a new Git-based deployment using `npm run build:vercel`.
 
-- [ ] **Step 6: Verify the resulting deployments**
+- [x] **Step 6: Verify the resulting deployments**
 
 Check that:
 
@@ -518,4 +518,4 @@ Check that:
 - The Vercel deployment loads successfully at its production URL if the URL is available.
 - The existing Sites deployment still builds from the vinext path; publish it through the Sites workflow only if that workflow is available and authorized in the current environment.
 
-Verification note (2026-07-15): the Vercel connector is not connected, no `.vercel/project.json` or Vercel CLI is available, and the separate GitHub `main` plus Sites version 7 remain at `3dfdb5d`. No repository-local Sites publish command exists, so the external deployment step remains unchecked for controller handoff.
+Verified final delivery state (2026-07-15): GitHub `main` contains `be2c3ff`, Vercel production is live at `https://kachamba-swim.vercel.app/`, and OpenAI Sites version 8 is deployed at `https://kachalaba-personal-swim.kamamber.chatgpt.site` from the same source.
