@@ -2,11 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { CinematicMedia } from "./components/CinematicMedia";
+import { MethodRail } from "./components/MethodRail";
 import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
-import { analysisPath, instagramUrl, telegramUrl, whatsappUrl } from "./site-links";
-import { copy, type Language } from "./site-copy";
+import { WaterInterface } from "./components/WaterInterface";
+import {
+  copy,
+  type Language,
+} from "./site-copy";
+import {
+  analysisPath,
+  happyTriFriendsUrl,
+  instagramUrl,
+  telegramUrl,
+  whatsappUrl,
+} from "./site-links";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -70,23 +81,36 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="cinema-hero" id="top" aria-labelledby="hero-title">
-        <div className="cinema-hero-media" aria-hidden="true">
-          <img src="/media/hero-pool.webp" alt="" />
-        </div>
+      <WaterInterface>
         <div className="cinema-hero-shade" aria-hidden="true" />
         <Reveal className="cinema-hero-copy">
           <p className="eyebrow">{t.label}</p>
           <h1 id="hero-title">
             <span className="hero-title-filled">{t.headlineLines[0]}</span>
-            <span className="hero-title-outline">{t.headlineLines[1]}</span>
+            <span className="hero-title-outline">
+              <span className="hero-title-outline-stroke">{t.headlineLines[1]}</span>
+              <span
+                className="hero-title-outline-fill"
+                aria-hidden="true"
+                data-text={t.headlineLines[1]}
+              />
+            </span>
           </h1>
           <p className="hero-offer">{t.offer}</p>
           <p className="hero-intro">{t.heroText}</p>
           <div className="hero-facts">
-            <p>{t.price}</p>
+            <p>{t.heroPrice}</p>
             <p>{t.capacity}</p>
           </div>
+          <a
+            className="htf-affiliation htf-affiliation--mobile"
+            href={happyTriFriendsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.affiliationAriaLabel}
+          >
+            {t.affiliationLabel}<span aria-hidden="true">↗</span>
+          </a>
           <div className="hero-actions">
             <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
               {t.cta}<span aria-hidden="true">↗</span>
@@ -102,12 +126,21 @@ export default function Home() {
           <ul>
             {t.documentaryNotes.map((note) => <li key={note}>{note}</li>)}
           </ul>
+          <a
+            className="htf-affiliation htf-affiliation--desktop"
+            href={happyTriFriendsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.affiliationAriaLabel}
+          >
+            {t.affiliationLabel}<span aria-hidden="true">↗</span>
+          </a>
         </div>
-      </section>
+      </WaterInterface>
 
       <section className="routes scene" id="audiences" aria-labelledby="audiences-title">
         <p className="scene-number" aria-hidden="true">01</p>
-        <Reveal className="scene-heading">
+        <Reveal className="scene-heading" surface>
           <p className="eyebrow">{t.audienceLabel}</p>
           <h2 id="audiences-title">{t.audienceTitle}</h2>
         </Reveal>
@@ -124,7 +157,7 @@ export default function Home() {
 
       <section className="method scene" id="method" aria-labelledby="method-title">
         <p className="scene-number" aria-hidden="true">02</p>
-        <Reveal className="method-copy">
+        <Reveal className="method-copy" surface>
           <p className="eyebrow">{t.methodLabel}</p>
           <h2 id="method-title">{t.methodTitle}</h2>
           <p>{t.methodText}</p>
@@ -132,14 +165,14 @@ export default function Home() {
         <Reveal className="method-proof" delay={100}>
           {t.proof.map((fact) => <p key={fact}>{fact}</p>)}
         </Reveal>
-        <ProgressRail label={t.methodLine} items={t.methodSteps} mode="method" />
+        <MethodRail label={t.methodLine} items={t.methodSteps} />
         <p className="sequence-line">{t.methodLine}</p>
       </section>
 
       <section className="coaching-loop scene" id="system" aria-labelledby="loop-title">
         <p className="scene-number" aria-hidden="true">03</p>
         <div className="coaching-loop-lead">
-          <Reveal className="scene-heading">
+          <Reveal className="scene-heading" surface>
             <p className="eyebrow">{t.loopLabel}</p>
             <h2 id="loop-title">{t.loopTitle}</h2>
             <p>{t.loopText}</p>
@@ -207,7 +240,7 @@ export default function Home() {
 
       <section className="practice scene" id="practice" aria-labelledby="practice-title">
         <p className="scene-number" aria-hidden="true">04</p>
-        <Reveal className="scene-heading">
+        <Reveal className="scene-heading" surface>
           <p className="eyebrow">{t.practiceLabel}</p>
           <h2 id="practice-title">{t.practiceTitle}</h2>
           <p>{t.practiceText}</p>
@@ -223,7 +256,19 @@ export default function Home() {
           <Reveal className="coach-note" delay={120}>
             <p className="eyebrow">{t.coachLabel}</p>
             <h3>{t.coachTitle}</h3>
-            <p>{t.coachText}</p>
+            <p>
+              {t.coachTextBeforeClub}
+              <a
+                className="htf-inline-link"
+                href={happyTriFriendsUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.affiliationAriaLabel}
+              >
+                Happy Tri Friends
+              </a>
+              {t.coachTextAfterClub}
+            </p>
             <a className="text-link" href={instagramUrl} target="_blank" rel="noreferrer">
               {t.coachLink}<span aria-hidden="true">↗</span>
             </a>
@@ -265,14 +310,17 @@ export default function Home() {
 
       <section className="offer scene" id="price" aria-labelledby="price-title">
         <p className="scene-number" aria-hidden="true">06</p>
-        <Reveal className="offer-heading">
+        <Reveal className="offer-heading" surface>
           <p className="eyebrow">{t.pricingLabel}</p>
           <h2 id="price-title">{t.pricingTitle}</h2>
           <p className="offer-price">{t.price}</p>
         </Reveal>
         <div className="offer-detail">
-          <div>
-            {t.priceFacts.map((fact) => <p key={fact}>{fact}</p>)}
+          <div className="offer-pricing">
+            <div className="price-facts">
+              {t.priceFacts.map((fact) => <p key={fact}>{fact}</p>)}
+            </div>
+            <p className="pricing-clarification">{t.pricingClarification}</p>
           </div>
           <p className="offer-note">{t.pricingText}</p>
         </div>
@@ -291,17 +339,51 @@ export default function Home() {
               {t.analysisCta}<span aria-hidden="true">→</span>
             </a>
           </div>
-          <div className="messenger-links" aria-label={t.messengerPrompt}>
-            <span>{t.messengerPrompt}</span>
-            <a href={telegramUrl} target="_blank" rel="noreferrer">{t.telegram}</a>
-            <a href={whatsappUrl} target="_blank" rel="noreferrer">{t.whatsapp}</a>
-          </div>
+          <nav className="contact-alternatives" aria-label={t.contactChannelsLabel}>
+            <span>{t.alternativeContact}</span>
+            <span className="contact-alternative-links">
+              <a
+                href={telegramUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.telegramAriaLabel}
+              >
+                Telegram
+              </a>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t.whatsappAriaLabel}
+              >
+                WhatsApp
+              </a>
+            </span>
+          </nav>
         </Reveal>
       </section>
 
       <footer>
         <span>{t.footer}</span>
-        <a href={instagramUrl} target="_blank" rel="noreferrer">@kachalaba_swim</a>
+        <nav className="footer-links" aria-label={t.contactChannelsLabel}>
+          <a href={instagramUrl} target="_blank" rel="noreferrer">Instagram</a>
+          <a
+            href={telegramUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.telegramAriaLabel}
+          >
+            Telegram
+          </a>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.whatsappAriaLabel}
+          >
+            WhatsApp
+          </a>
+        </nav>
       </footer>
     </main>
   );

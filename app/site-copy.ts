@@ -8,7 +8,8 @@ export const copy = {
     label: "Онлайн-ведення з плавання · Україна та світ",
     headlineLines: ["Плавання, яке", "підлаштоване під ваше життя."],
     offer: "Персональне онлайн-ведення з плавання",
-    price: "Повне ведення — від 4 500 грн/місяць",
+    heroPrice: "Повне ведення — від 4 500 грн/місяць",
+    price: "Від 4 500 грн/місяць",
     capacity: "До 8–10 спортсменів одночасно",
     cta: "Обговорити формат",
     analysisCta: "Розбір техніки за відео",
@@ -18,14 +19,13 @@ export const copy = {
     auditPanelText:
       "Надішліть відео одного стилю й отримайте evidence-кадри, три пріоритети, практичні вправи та 20-хвилинний дзвінок із тренером.",
     auditPanelFacts: ["₴2 490", "до 48 годин", "вартість зарахую у перший місяць ведення"],
-    messengerPrompt: "Зручніше в месенджері?",
-    telegram: "Telegram",
-    whatsapp: "WhatsApp",
     heroText:
       "Для дорослих, які хочуть рухатися у воді впевненіше — від перших довжин до сильнішого плавального етапу в триатлоні.",
     proof: ["7 років методики", "5000+ годин персональної роботи"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     documentaryNotes: ["Дорослі новачки", "Триатлети-аматори"],
+    affiliationLabel: "COACH AT HAPPY TRI FRIENDS",
+    affiliationAriaLabel: "Happy Tri Friends — відкрити сайт клубу в новій вкладці",
     audienceLabel: "Дві стартові точки",
     audienceTitle: "Один процес. Дві різні стартові точки.",
     audiences: [
@@ -36,7 +36,12 @@ export const copy = {
     methodTitle: "Точність починається не з темпу.",
     methodText:
       "Спочатку прибираємо зайву напругу й вибудовуємо відчуття води. Швидкість приходить як наслідок руху, який можна повторити.",
-    methodSteps: ["Дихання", "Техніка", "Темп", "Відновлення"],
+    methodSteps: [
+      ["Дихання", "Прибираємо затримку й паніку: видих у воду стає ритмом руху."],
+      ["Техніка", "Збираємо положення тіла, захват і ковзання без зайвої напруги."],
+      ["Темп", "Знаходимо швидкість, яку можна повторити — без боротьби з водою."],
+      ["Відновлення", "Дозуємо навантаження так, щоб наступне тренування додавало, а не ламало."],
+    ],
     methodLine: "Дихання → Техніка → Темп → Відновлення",
     guidedLabel: "Ведення замість здогадок",
     guidedTitle: "Після тренування не треба вгадувати, що змінити.",
@@ -73,11 +78,12 @@ export const copy = {
     practiceTitle: "Роботу видно у воді.",
     practiceText:
       "Басейн, старт, відкрита вода, робота поруч із спортсменом. Саме з цього контексту виростає план, який витримує реальність.",
-    practiceCaptions: ["Робота над відчуттям води", "Тренер поруч із процесом", "Команда HTF на старті", "Досвід відкритої води"],
+    practiceCaptions: ["Робота над відчуттям води", "Тренер поруч із процесом", "Команда на старті", "Досвід відкритої води"],
     coachLabel: "Тренер",
     coachTitle: "Микита Качалаба",
-    coachText:
-      "Тренер з плавання та тренер HTF — київського триатлонного клубу. Допомагаю дорослим збудувати техніку й тренувальний ритм, які витримують звичайне життя.",
+    coachTextBeforeClub: "Тренер з плавання та тренер київського триатлонного клубу ",
+    coachTextAfterClub:
+      ". Допомагаю дорослим збудувати техніку й тренувальний ритм, які витримують звичайне життя.",
     coachLink: "Дивитися тренування в Instagram",
     pricingLabel: "Вартість",
     pricingTitle: "Персональна робота з прозорою логікою ціни.",
@@ -86,11 +92,17 @@ export const copy = {
       "Силовий план — +900 грн/місяць; разом із двома плаваннями — від 4 500 грн/місяць",
       "Повне ведення: 3 тренування з плавання + зал — від 6 300 грн/місяць",
     ],
+    pricingClarification:
+      "Вартість персонального ведення. Басейн і клубні абонементи оплачуються окремо.",
     pricingText:
-      "Вартість персонального ведення. Басейн і клубні абонементи оплачуються окремо. Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
+      "Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
     finalTitle: "Якщо хочете плисти точніше — почнемо з розмови.",
     finalText:
       "Напишіть в Instagram: ваша ціль, місто або доступ до басейну та скільки тренувань на тиждень вам реально доступно. Я відповім, з якого формату краще почати.",
+    alternativeContact: "Зручніше в месенджері?",
+    contactChannelsLabel: "Альтернативні канали зв’язку",
+    telegramAriaLabel: "Написати Микиті в Telegram — відкриється в новій вкладці",
+    whatsappAriaLabel: "Написати Микиті у WhatsApp — відкриється в новій вкладці",
     footer: "© 2026 Микита Качалаба · Персональне онлайн-ведення з плавання",
   },
   en: {
@@ -100,6 +112,7 @@ export const copy = {
     label: "Online swim coaching · Ukraine and worldwide",
     headlineLines: ["Swimming that", "adapts to your life."],
     offer: "Personal online swim coaching",
+    heroPrice: "Full coaching — from $100/month",
     price: "From $100/month",
     capacity: "Up to 8–10 athletes at a time",
     cta: "Discuss the fit",
@@ -110,14 +123,13 @@ export const copy = {
     auditPanelText:
       "Send a video of one stroke and receive evidence frames, three priorities, practical drills and a 20-minute call with the coach.",
     auditPanelFacts: ["€59", "within 48 hours", "credited toward your first month of coaching"],
-    messengerPrompt: "Prefer a messenger?",
-    telegram: "Telegram",
-    whatsapp: "WhatsApp",
     heroText:
       "For adults who want to move through water with more confidence — from their first lengths to a stronger swim leg in triathlon.",
     proof: ["7 years of methodology", "5,000+ hours of personal coaching"],
     documentaryLabel: "PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE",
     documentaryNotes: ["Adult beginners", "Amateur triathletes"],
+    affiliationLabel: "COACH AT HAPPY TRI FRIENDS",
+    affiliationAriaLabel: "Happy Tri Friends — open the club website in a new tab",
     audienceLabel: "Two starting points",
     audienceTitle: "One process. Two different starting points.",
     audiences: [
@@ -128,7 +140,12 @@ export const copy = {
     methodTitle: "Precision does not begin with pace.",
     methodText:
       "First we remove unnecessary tension and build a feel for the water. Speed follows from movement you can repeat.",
-    methodSteps: ["Breathing", "Technique", "Pace", "Recovery"],
+    methodSteps: [
+      ["Breathing", "We remove breath-holding and panic until exhaling into the water becomes the rhythm of the stroke."],
+      ["Technique", "We align body position, catch and glide without adding unnecessary tension."],
+      ["Pace", "We find a speed you can repeat, without fighting the water."],
+      ["Recovery", "We dose the work so the next session builds you up instead of breaking you down."],
+    ],
     methodLine: "Breathing → Technique → Pace → Recovery",
     guidedLabel: "Guidance instead of guessing",
     guidedTitle: "After a session, you do not have to guess what to change.",
@@ -165,24 +182,31 @@ export const copy = {
     practiceTitle: "The work is visible in the water.",
     practiceText:
       "Pool sessions, race starts, open water, and coaching beside the athlete. This is the context behind a plan that can withstand real life.",
-    practiceCaptions: ["Building a feel for the water", "Coaching beside the process", "HTF team at a race", "Open-water experience"],
+    practiceCaptions: ["Building a feel for the water", "Coaching beside the process", "Team at the start", "Open-water experience"],
     coachLabel: "Coach",
     coachTitle: "Mykyta Kachalaba",
-    coachText:
-      "Swimming coach and coach at HTF, a Kyiv triathlon club. I help adults build technique and a training rhythm that can hold up in everyday life.",
+    coachTextBeforeClub: "Swimming coach and coach at ",
+    coachTextAfterClub:
+      ", a Kyiv triathlon club. I help adults build technique and a training rhythm that can hold up in everyday life.",
     coachLink: "See training on Instagram",
     pricingLabel: "Pricing",
     pricingTitle: "Personal work with transparent pricing logic.",
     priceFacts: [
-      "2 swim sessions per week — $80/month",
-      "Quarterly gym plan — $60 / $20 per month",
-      "3 swim sessions per week + gym — from $140/month",
+      "Swim plan: two weekly sessions — $80/month",
+      "Strength plan — +$20/month; with two swim sessions — from $100",
+      "Full coaching: three swim sessions + strength — from $140/month",
     ],
+    pricingClarification:
+      "Pricing covers personal coaching. Pool access and club memberships are paid separately.",
     pricingText:
       "Your final format depends on your experience, goal and the number of sessions that genuinely fit into your week.",
     finalTitle: "If you want to swim with more precision, let us start with a conversation.",
     finalText:
       "Message me on Instagram with your goal, city or pool access, and the number of weekly sessions you can realistically make. I will reply with the best format to start with.",
+    alternativeContact: "Prefer another messenger?",
+    contactChannelsLabel: "Alternative contact channels",
+    telegramAriaLabel: "Message Mykyta on Telegram — opens in a new tab",
+    whatsappAriaLabel: "Message Mykyta on WhatsApp — opens in a new tab",
     footer: "© 2026 Mykyta Kachalaba · Personal online swim coaching",
   },
 } as const;

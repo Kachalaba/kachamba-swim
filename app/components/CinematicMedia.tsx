@@ -58,7 +58,8 @@ export function CinematicMedia({
       return;
     }
 
-    if (!("IntersectionObserver" in window)) {
+    const supportsIntersectionObserver = typeof window.IntersectionObserver === "function";
+    if (!supportsIntersectionObserver) {
       visibleRef.current = true;
       const frame = window.requestAnimationFrame(() => setShouldLoad(true));
       return () => {
