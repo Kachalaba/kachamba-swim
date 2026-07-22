@@ -10,7 +10,8 @@ export function buildAnalysisBrief(input) {
   const goal = required(input.goal, "goal");
   const level = required(input.level, "level");
   const stroke = required(input.stroke, "stroke");
-  const deadline = String(input.deadline ?? "").trim() || "—";
+  const deadline = String(input.deadline ?? "").trim()
+    || (language === "en" ? "not specified" : "не вказано");
 
   if (language === "en") {
     return [

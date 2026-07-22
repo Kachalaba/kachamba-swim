@@ -5,7 +5,7 @@ export const analysisCopy = {
     languageLabel: "Мова",
     back: "На головну",
     eyebrow: "Video Technique Audit · персонально від тренера",
-    title: "Побачити головну помилку у техніці — і знати, що робити далі.",
+    title: "Побачити головну помилку у техніці й знати, що робити далі.",
     intro:
       "Надішліть відео одного стилю. Протягом 48 годин ви отримаєте розбір з доказовими кадрами, трьома пріоритетами та вправами для наступних тренувань.",
     price: "₴2 490 / €59",
@@ -28,7 +28,7 @@ export const analysisCopy = {
     guide: [
       "Зніміть 15–25 метрів збоку, тримаючи все тіло в кадрі.",
       "Додайте короткий ракурс спереду або ззаду, якщо це безпечно.",
-      "Знімайте у звичному темпі — не намагайтеся показати ідеальний заплив.",
+      "Знімайте у звичному темпі. Не намагайтеся показати ідеальний заплив.",
     ],
     processLabel: "Як це працює",
     process: [
@@ -45,6 +45,7 @@ export const analysisCopy = {
       goalPlaceholder: "Наприклад: впевнено проплисти 1,9 км",
       level: "Рівень",
       stroke: "Стиль",
+      selectPlaceholder: "Оберіть варіант",
       deadline: "Термін або дата старту",
       deadlinePlaceholder: "Наприклад: старт через 8 тижнів",
       videoReady: "Відео вже готове",
@@ -72,7 +73,7 @@ export const analysisCopy = {
     languageLabel: "Language",
     back: "Back home",
     eyebrow: "Video Technique Audit · reviewed personally by the coach",
-    title: "See the one technique issue that matters most — and know what to do next.",
+    title: "See the one technique issue that matters most and know what to do next.",
     intro:
       "Send a video of one stroke. Within 48 hours, receive an evidence-led review with annotated frames, three priorities and drills for your next sessions.",
     price: "€59 / ₴2,490",
@@ -83,7 +84,7 @@ export const analysisCopy = {
     artifactTitle: "More than comments. A working plan for your next pool session.",
     deliverables: [
       ["01", "Evidence frames", "Annotated stills showing the moments that shape your movement efficiency."],
-      ["02", "Three priorities", "What to change first — and what to leave alone so your attention stays focused."],
+      ["02", "Three priorities", "What to change first and what to leave alone so your attention stays focused."],
       ["03", "Practical drills", "Clear cues and exercises you can add to your next session."],
       ["04", "20 minutes with the coach", "A short follow-up call for questions after you receive the review."],
     ],
@@ -95,7 +96,7 @@ export const analysisCopy = {
     guide: [
       "Film 15–25 metres from the side, keeping your full body in frame.",
       "Add a short front or rear angle if it is safe to do so.",
-      "Swim at your normal pace — do not try to perform a perfect take.",
+      "Swim at your normal pace. Do not try to perform a perfect take.",
     ],
     processLabel: "How it works",
     process: [
@@ -112,6 +113,7 @@ export const analysisCopy = {
       goalPlaceholder: "For example: swim 1.9 km with confidence",
       level: "Level",
       stroke: "Stroke",
+      selectPlaceholder: "Choose an option",
       deadline: "Deadline or race date",
       deadlinePlaceholder: "For example: race in 8 weeks",
       videoReady: "My video is ready",
@@ -136,4 +138,3 @@ export const analysisCopy = {
     upgradeCta: "See personal coaching",
   },
 } as const satisfies Record<Language, object>;
-

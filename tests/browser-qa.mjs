@@ -425,7 +425,7 @@ const keyboardMethod = await evaluate(`(() => ({
 assert.deepEqual(keyboardMethod, {
   active: "3",
   focused: "method-tab-3",
-  visible: "Знаходимо швидкість, яку можна повторити — без боротьби з водою.",
+  visible: "Знаходимо швидкість, яку можна повторити без боротьби з водою.",
 });
 assert.equal(await evaluate(`document.querySelector('#method').dataset.surfacePass`), "true");
 await screenshot("/tmp/kachamba-method.png");

@@ -151,14 +151,14 @@ export function AnalysisIntake({ telegramHref, whatsappHref }: Props) {
               <label>
                 <span>{t.fields.level}</span>
                 <select name="level" required defaultValue="">
-                  <option value="" disabled>—</option>
+                  <option value="" disabled>{t.fields.selectPlaceholder}</option>
                   {t.levels.map((item) => <option key={item}>{item}</option>)}
                 </select>
               </label>
               <label>
                 <span>{t.fields.stroke}</span>
                 <select name="stroke" required defaultValue="">
-                  <option value="" disabled>—</option>
+                  <option value="" disabled>{t.fields.selectPlaceholder}</option>
                   {t.strokes.map((item) => <option key={item}>{item}</option>)}
                 </select>
               </label>

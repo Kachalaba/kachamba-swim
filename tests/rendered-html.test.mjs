@@ -53,10 +53,10 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /Персональне онлайн-ведення з плавання/);
-  assert.match(html, /Повне ведення — від 4 500 грн\/місяць/);
+  assert.match(html, /Повне ведення: від 4 500 грн\/місяць/);
   assert.match(html, /Від 4 500 грн\/місяць/);
-  assert.match(html, /2 тренування щотижня — 3 600 грн\/місяць/);
-  assert.match(html, /Силовий план — \+900 грн\/місяць/);
+  assert.match(html, /2 тренування щотижня, 3 600 грн\/місяць/);
+  assert.match(html, /Силовий план: \+900 грн\/місяць/);
   assert.match(html, /від 6 300 грн\/місяць/);
   assert.match(
     html,
@@ -83,7 +83,8 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.equal((html.match(/data-method-panel/g) ?? []).length, 4);
   assert.match(html, /Прибираємо затримку й паніку: видих у воду стає ритмом руху\./);
   assert.match(html, /Збираємо положення тіла, захват і ковзання без зайвої напруги\./);
-  assert.match(html, /Знаходимо швидкість, яку можна повторити — без боротьби з водою\./);
+  assert.match(html, /Знаходимо швидкість, яку можна повторити без боротьби з водою\./);
+  assert.doesNotMatch(html, /—/);
   assert.match(html, /Дозуємо навантаження так, щоб наступне тренування додавало, а не ламало\./);
   assert.doesNotMatch(html, /data-progress-mode="method"/);
   assert.match(html, /План → Дія → Відеорозбір → Корекція → Наступний блок/);

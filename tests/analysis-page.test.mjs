@@ -26,4 +26,5 @@ test("server-renders the paid Video Technique Audit funnel", async () => {
   assert.match(html, /Підготувати повідомлення/);
   assert.match(html, /Evidence-кадри/);
   assert.match(html, /href="\/"/);
+  assert.doesNotMatch(html, /—/);
 });

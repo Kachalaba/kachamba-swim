@@ -7,7 +7,7 @@ const siteUrl = "https://kachalaba.coach";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Mykyta Kachalaba — Personal Swim Coaching",
+  title: "Mykyta Kachalaba | Personal Swim Coaching",
   description: "Personal swim coaching and professional video technique analysis by Mykyta Kachalaba. Coaching from 4,500 UAH per month; video audit from 2,490 UAH.",
   alternates: {
     canonical: "/",
@@ -16,15 +16,15 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
-    title: "Mykyta Kachalaba — Personal Swim Coaching",
+    title: "Mykyta Kachalaba | Personal Swim Coaching",
     description: "Personal swim coaching and professional video technique analysis. Coaching from 4,500 UAH per month; video audit from 2,490 UAH.",
     type: "website",
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mykyta Kachalaba — Personal Swim Coaching" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mykyta Kachalaba | Personal Swim Coaching" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mykyta Kachalaba — Personal Swim Coaching",
+    title: "Mykyta Kachalaba | Personal Swim Coaching",
     description: "Personal swim coaching and professional video technique analysis. Coaching from 4,500 UAH per month; video audit from 2,490 UAH.",
     images: ["/og.png"],
   },
