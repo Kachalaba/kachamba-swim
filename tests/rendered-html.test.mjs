@@ -119,7 +119,7 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.equal((html.match(/data-surface="true"/g) ?? []).length, 5);
   assert.match(html, /<link rel="canonical" href="https:\/\/kachalaba\.coach\/"/);
   assert.match(html, /property="og:url" content="https:\/\/kachalaba\.coach\/"/);
-  assert.match(html, /property="og:image" content="https:\/\/kachalaba\.coach\/og\.png"/);
+  assert.match(html, /property="og:image" content="https:\/\/kachalaba\.coach\/og\.jpg"/);
   assert.match(html, /<link[^>]*rel="icon"[^>]*href="[^"]*\/favicon\.svg"/);
   const conversionLinks = html.match(
     /href="https:\/\/www\.instagram\.com\/kachalaba_swim\/" target="_blank" rel="noreferrer"/g,

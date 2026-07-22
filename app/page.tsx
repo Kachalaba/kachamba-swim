@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { JsonLd } from "./JsonLd";
 import { CinematicMedia } from "./components/CinematicMedia";
 import { MethodRail } from "./components/MethodRail";
 import { ProgressRail } from "./components/ProgressRail";
@@ -18,6 +19,7 @@ import {
   telegramUrl,
   whatsappUrl,
 } from "./site-links";
+import { homeJsonLd } from "./seo";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -55,7 +57,9 @@ export default function Home() {
   };
 
   return (
-    <main className="site-shell" lang={language}>
+    <>
+      <JsonLd data={homeJsonLd} />
+      <main className="site-shell" lang={language}>
       <header className="topbar">
         <a className="wordmark" href="#top" aria-label="Kachalaba Swim">
           KACHALABA<span>SWIM</span>
@@ -387,6 +391,7 @@ export default function Home() {
           </a>
         </nav>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }

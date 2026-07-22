@@ -1,13 +1,44 @@
 import type { Metadata } from "next";
+import { JsonLd } from "../JsonLd";
+import {
+  analysisDescription,
+  analysisJsonLd,
+  analysisTitle,
+  siteName,
+  socialImage,
+} from "../seo";
 import { analysisTelegramUrl, whatsappUrl } from "../site-links";
 import { AnalysisIntake } from "./AnalysisIntake";
 
 export const metadata: Metadata = {
-  title: "Video Technique Audit | Kachalaba Swim",
-  description:
-    "Персональний розбір техніки плавання за відео: evidence-кадри, три пріоритети, вправи та дзвінок із тренером.",
+  title: analysisTitle,
+  description: analysisDescription,
+  alternates: {
+    canonical: "/analysis",
+  },
+  openGraph: {
+    title: `${analysisTitle} | ${siteName}`,
+    description: analysisDescription,
+    type: "website",
+    url: "/analysis",
+    siteName,
+    locale: "uk_UA",
+    alternateLocale: ["en_US"],
+    images: [{ ...socialImage, alt: "Відеорозбір техніки плавання з Микитою Качалабою" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${analysisTitle} | ${siteName}`,
+    description: analysisDescription,
+    images: [socialImage.url],
+  },
 };
 
 export default function AnalysisPage() {
-  return <AnalysisIntake telegramHref={analysisTelegramUrl()} whatsappHref={whatsappUrl} />;
+  return (
+    <>
+      <JsonLd data={analysisJsonLd} />
+      <AnalysisIntake telegramHref={analysisTelegramUrl()} whatsappHref={whatsappUrl} />
+    </>
+  );
 }
