@@ -19,11 +19,11 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /Персональне онлайн-ведення з плавання/);
-  assert.match(html, /Від \$100\/місяць/);
+  assert.match(html, /Повне ведення — від 4 500 грн\/місяць/);
   assert.match(html, /Для дорослих, які починають/);
   assert.match(html, /Для триатлетів-любителів/);
   assert.match(html, /До 8–10 спортсменів одночасно/);
-  assert.match(html, /kachamba_swim/);
+  assert.match(html, /kachalaba_swim/);
   assert.match(html, /lang="uk"/);
   assert.match(html, /План → дія → відеозворотний зв’язок → корекція → безперервність/);
   assert.match(html, /Надсилаєте відео й отримуєте зворотний зв’язок/);
@@ -43,14 +43,19 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /Плавання, яке[\s\S]*підлаштоване під ваше життя\./);
   assert.match(html, /PERSONAL SWIM COACHING · UKRAINE · WORLDWIDE/);
   assert.match(html, /Обговорити формат/);
+  assert.match(html, /Розбір техніки за відео/);
+  assert.match(html, /₴2 490/);
+  assert.match(html, /href="\/analysis"/);
+  assert.match(html, /href="https:\/\/t\.me\/m\/mIj5epmcZGE6"/);
+  assert.match(html, /href="https:\/\/wa\.me\/380970353470"/);
   assert.doesNotMatch(html, /Запитати про місце/);
   assert.match(html, /data-revealed="false"/);
   assert.match(html, /data-active-route="0"/);
   assert.match(html, /data-progress-mode="method"/);
   assert.match(html, /data-progress-mode="coaching"/);
-  assert.match(html, /property="og:image" content="https:\/\/kachalaba-personal-swim\.kamamber\.chatgpt\.site\/og\.png"/);
+  assert.match(html, /property="og:image" content="https:\/\/kachalaba\.coach\/og\.png"/);
   const conversionLinks = html.match(
-    /href="https:\/\/www\.instagram\.com\/kachamba_swim\/" target="_blank" rel="noreferrer"/g,
+    /href="https:\/\/www\.instagram\.com\/kachalaba_swim\/" target="_blank" rel="noreferrer"/g,
   ) ?? [];
   assert.equal(conversionLinks.length, 4);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/);

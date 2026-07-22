@@ -1,7 +1,5 @@
 export type Language = "uk" | "en";
 
-export const instagramUrl = "https://www.instagram.com/kachamba_swim/";
-
 export const copy = {
   uk: {
     nav: ["Кому підійде", "Метод", "Система", "Практика", "Вартість"],
@@ -10,9 +8,14 @@ export const copy = {
     label: "Онлайн-ведення з плавання · Україна та світ",
     headlineLines: ["Плавання, яке", "підлаштоване під ваше життя."],
     offer: "Персональне онлайн-ведення з плавання",
-    price: "Від $100/місяць",
+    price: "Повне ведення — від 4 500 грн/місяць",
     capacity: "До 8–10 спортсменів одночасно",
     cta: "Обговорити формат",
+    analysisCta: "Розбір техніки за відео",
+    analysisPrice: "₴2 490 · відповідь до 48 годин",
+    messengerPrompt: "Зручніше в месенджері?",
+    telegram: "Telegram",
+    whatsapp: "WhatsApp",
     heroText:
       "Для дорослих, які хочуть рухатися у воді впевненіше — від перших довжин до сильнішого плавального етапу в триатлоні.",
     proof: ["7 років методики", "5000+ годин персональної роботи"],
@@ -74,12 +77,12 @@ export const copy = {
     pricingLabel: "Вартість",
     pricingTitle: "Персональна робота з прозорою логікою ціни.",
     priceFacts: [
-      "2 тренування з плавання щотижня — $80/місяць",
-      "План для залу на квартал — $60 / $20 на місяць",
-      "3 тренування з плавання щотижня + зал — від $140/місяць",
+      "План з плавання: 2 тренування щотижня — 3 600 грн/місяць",
+      "Силовий план — +900 грн/місяць; разом із двома плаваннями — від 4 500 грн/місяць",
+      "Повне ведення: 3 тренування з плавання + зал — від 6 300 грн/місяць",
     ],
     pricingText:
-      "Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
+      "Вартість персонального ведення. Басейн і клубні абонементи оплачуються окремо. Фінальний формат залежить від вашого досвіду, цілі та кількості тренувань, які реально помістяться у тиждень.",
     finalTitle: "Якщо хочете плисти точніше — почнемо з розмови.",
     finalText:
       "Напишіть в Instagram: ваша ціль, місто або доступ до басейну та скільки тренувань на тиждень вам реально доступно. Я відповім, з якого формату краще почати.",
@@ -95,6 +98,11 @@ export const copy = {
     price: "From $100/month",
     capacity: "Up to 8–10 athletes at a time",
     cta: "Discuss the fit",
+    analysisCta: "Video technique audit",
+    analysisPrice: "€59 · delivered within 48 hours",
+    messengerPrompt: "Prefer a messenger?",
+    telegram: "Telegram",
+    whatsapp: "WhatsApp",
     heroText:
       "For adults who want to move through water with more confidence — from their first lengths to a stronger swim leg in triathlon.",
     proof: ["7 years of methodology", "5,000+ hours of personal coaching"],

@@ -5,7 +5,8 @@ import { CinematicMedia } from "./components/CinematicMedia";
 import { ProgressRail } from "./components/ProgressRail";
 import { Reveal } from "./components/Reveal";
 import { RoutePair } from "./components/RoutePair";
-import { copy, instagramUrl, type Language } from "./site-copy";
+import { analysisPath, instagramUrl, telegramUrl, whatsappUrl } from "./site-links";
+import { copy, type Language } from "./site-copy";
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -86,9 +87,15 @@ export default function Home() {
             <p>{t.price}</p>
             <p>{t.capacity}</p>
           </div>
-          <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
-            {t.cta}<span aria-hidden="true">↗</span>
-          </a>
+          <div className="hero-actions">
+            <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
+              {t.cta}<span aria-hidden="true">↗</span>
+            </a>
+            <a className="button button-quiet" href={analysisPath}>
+              {t.analysisCta}<span aria-hidden="true">→</span>
+            </a>
+          </div>
+          <p className="analysis-price-note">{t.analysisPrice}</p>
         </Reveal>
         <div className="documentary-rail" aria-label={t.documentaryLabel}>
           <p>{t.documentaryLabel}</p>
@@ -260,6 +267,11 @@ export default function Home() {
           <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
             {t.cta}<span aria-hidden="true">↗</span>
           </a>
+          <div className="messenger-links" aria-label={t.messengerPrompt}>
+            <span>{t.messengerPrompt}</span>
+            <a href={telegramUrl} target="_blank" rel="noreferrer">{t.telegram}</a>
+            <a href={whatsappUrl} target="_blank" rel="noreferrer">{t.whatsapp}</a>
+          </div>
         </Reveal>
       </section>
 
