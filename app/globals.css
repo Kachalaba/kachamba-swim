@@ -899,8 +899,10 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
 /* Video audit funnel — shared entry points and evidence-first sales surface. */
 .button-quiet { border-color: rgba(217, 255, 248, .3); color: var(--pearl); }
 .button-quiet:hover { border-color: var(--aqua); color: var(--aqua); }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.analysis-price-note { margin: 12px 0 0; color: rgba(217, 255, 248, .58); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; }
+.hero-analysis-offer { display: grid; gap: 9px; }
+.hero-analysis-offer .button { width: 100%; }
+.analysis-price-note { margin: 0; padding-inline: 14px; color: rgba(217, 255, 248, .66); font-size: 9px; letter-spacing: .075em; line-height: 1.4; text-align: center; text-transform: uppercase; white-space: nowrap; }
 .audit-entry { min-height: 0; background: var(--ink); }
 .audit-entry-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr); gap: clamp(52px, 10vw, 160px); align-items: end; }
 .audit-entry-copy h2 { max-width: 940px; }
@@ -986,6 +988,8 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
 @media (max-width: 760px) {
   .hero-actions { display: grid; width: min(100%, 310px); }
   .hero-actions .button { width: 100%; min-height: 52px; }
+  .hero-analysis-offer { width: 100%; }
+  .analysis-price-note { white-space: normal; }
   .audit-entry-layout { grid-template-columns: 1fr; gap: 58px; }
   .audit-entry-copy > p:last-child { font-size: 15px; }
   .audit-entry-action .button { width: 100%; min-height: 52px; }

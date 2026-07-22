@@ -115,11 +115,13 @@ export default function Home() {
             <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
               {t.cta}<span aria-hidden="true">↗</span>
             </a>
-            <a className="button button-quiet" href={analysisPath}>
-              {t.analysisCta}<span aria-hidden="true">→</span>
-            </a>
+            <div className="hero-analysis-offer">
+              <a className="button button-quiet" href={analysisPath}>
+                {t.analysisCta}<span aria-hidden="true">→</span>
+              </a>
+              <p className="analysis-price-note">{t.analysisPrice}</p>
+            </div>
           </div>
-          <p className="analysis-price-note">{t.analysisPrice}</p>
         </Reveal>
         <div className="documentary-rail" aria-label={t.documentaryLabel}>
           <p>{t.documentaryLabel}</p>

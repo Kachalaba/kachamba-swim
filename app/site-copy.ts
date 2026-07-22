@@ -13,7 +13,7 @@ export const copy = {
     capacity: "До 8–10 спортсменів одночасно",
     cta: "Обговорити формат",
     analysisCta: "Розбір техніки за відео",
-    analysisPrice: "₴2 490 · відповідь до 48 годин",
+    analysisPrice: "Відеорозбір · ₴2 490 · готовність до 48 годин",
     auditPanelLabel: "Менший перший крок",
     auditPanelTitle: "Розбір без підписки. Конкретний фокус на наступне тренування.",
     auditPanelText:
@@ -117,7 +117,7 @@ export const copy = {
     capacity: "Up to 8–10 athletes at a time",
     cta: "Discuss the fit",
     analysisCta: "Video technique audit",
-    analysisPrice: "€59 · delivered within 48 hours",
+    analysisPrice: "Video audit · €59 · delivered within 48 hours",
     auditPanelLabel: "A smaller first step",
     auditPanelTitle: "A review without a subscription. A clear focus for your next session.",
     auditPanelText:
