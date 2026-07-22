@@ -2,6 +2,11 @@
 
 Premium bilingual sales site for Mykyta Kachalaba’s personal online swim coaching. The experience is built around documentary pool footage, a seven-scene editorial narrative, Ukrainian and English copy, and accessible motion.
 
+The site now sells two connected offers: recurring personal coaching and a
+one-off [Video Technique Audit](docs/releases/2026-07-22-video-technique-audit.md)
+at `/analysis`. The audit prepares a messenger-ready brief locally in the
+browser and does not upload or persist client data.
+
 ## Local development
 
 ```bash
@@ -19,7 +24,9 @@ npm test
 npm run lint
 ```
 
-`npm test` validates the production render, documentary-media budget, offer and conversion links, lazy video contract, bilingual hero structure, and absolute social metadata.
+`npm test` validates the homepage and `/analysis` production renders, local
+intake-message builder, documentary-media budget, offer and conversion links,
+lazy video contract, bilingual hero structure, and absolute social metadata.
 
 For a dependency-free runtime browser pass, start Chrome with the DevTools protocol and run:
 
