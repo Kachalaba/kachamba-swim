@@ -45,7 +45,9 @@ test("server-renders the Kachamba Swim premium landing page", async () => {
   assert.match(html, /Обговорити формат/);
   assert.match(html, /Розбір техніки за відео/);
   assert.match(html, /₴2 490/);
-  assert.match(html, /href="\/analysis"/);
+  assert.ok((html.match(/href="\/analysis"/g) ?? []).length >= 3);
+  assert.match(html, /Менший перший крок/);
+  assert.match(html, /Розбір без підписки/);
   assert.match(html, /href="https:\/\/t\.me\/m\/mIj5epmcZGE6"/);
   assert.match(html, /href="https:\/\/wa\.me\/380970353470"/);
   assert.doesNotMatch(html, /Запитати про місце/);

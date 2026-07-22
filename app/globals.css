@@ -132,8 +132,10 @@ button:focus-visible, a:focus-visible {
   transition: transform .4s var(--ease);
 }
 .button-light { background: var(--pearl); color: var(--ink); }
+.button-quiet { border-color: rgba(217, 255, 248, .3); color: var(--pearl); }
 .button:hover { transform: translateY(-3px); }
 .button:hover span { transform: rotate(45deg); }
+.button-quiet:hover { border-color: var(--aqua); color: var(--aqua); }
 
 /* Scene 00 — a framed, documentary-scale opening image. */
 .cinema-hero {
@@ -233,6 +235,8 @@ button:focus-visible, a:focus-visible {
   font-size: 10px;
   letter-spacing: .05em;
 }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.analysis-price-note { margin: 12px 0 0; color: rgba(217, 255, 248, .58); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .documentary-rail {
   position: absolute;
   z-index: 3;
@@ -429,6 +433,16 @@ button:focus-visible, a:focus-visible {
   text-shadow: 0 1px 12px rgba(6, 24, 29, .9);
 }
 
+/* A lower-commitment product entry without interrupting the coaching story. */
+.audit-entry { min-height: 0; background: var(--ink); }
+.audit-entry-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr); gap: clamp(52px, 10vw, 160px); align-items: end; }
+.audit-entry-copy h2 { max-width: 940px; }
+.audit-entry-copy > p:last-child { max-width: 720px; margin: 32px 0 0; color: var(--mist); font-size: 16px; line-height: 1.6; }
+.audit-entry-action { border-top: 1px solid var(--aqua); padding-top: 18px; }
+.audit-entry-facts { margin-bottom: 32px; }
+.audit-entry-facts p { margin: 0; border-bottom: 1px solid var(--line); padding: 14px 0; color: var(--mist); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; }
+.audit-entry-facts p:first-child { color: var(--ice); font-size: clamp(32px, 3.3vw, 52px); font-weight: 470; letter-spacing: -.06em; text-transform: none; }
+
 /* Scene 05 — one clear offer, no tariff matrix. */
 .offer { background: var(--water); }
 .offer-heading { display: grid; grid-template-columns: minmax(140px, .5fr) minmax(0, 1.15fr); column-gap: clamp(34px, 8vw, 132px); align-items: start; }
@@ -481,6 +495,10 @@ button:focus-visible, a:focus-visible {
 .invitation h2 { margin: 0; font-size: clamp(54px, 8.2vw, 130px); font-weight: 450; letter-spacing: -.08em; line-height: .86; }
 .invitation .reveal > p:not(.eyebrow) { max-width: 620px; margin: 30px auto 0; color: var(--mist); font-size: 16px; line-height: 1.55; }
 .invitation .button { margin-top: 42px; }
+.invitation-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.messenger-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 24px; color: rgba(245, 240, 230, .5); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.messenger-links a { color: var(--pearl); }
+.messenger-links a:hover { color: var(--aqua); }
 footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); padding: 26px 32px; color: rgba(245, 240, 230, .52); font-size: 10px; letter-spacing: .06em; }
 
 /* Video Technique Audit — a quiet evidence-first sales surface. */
@@ -639,6 +657,8 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
   .hero-facts { gap: 6px; margin-bottom: 16px; }
   .hero-facts p { padding: 6px 8px; font-size: 8px; }
   .button { min-width: 196px; padding-left: 18px; }
+  .hero-actions { display: grid; width: min(100%, 310px); }
+  .hero-actions .button { width: 100%; min-height: 52px; }
   .documentary-rail { display: none; }
   .scene { min-height: 0; padding: 96px 20px; }
   .scene-number { top: 22px; left: 20px; }
@@ -690,10 +710,16 @@ footer { display: flex; justify-content: space-between; gap: 24px; border-top: 1
     grid-row: auto;
     aspect-ratio: 4 / 5;
   }
+  .audit-entry-layout { grid-template-columns: 1fr; gap: 58px; }
+  .audit-entry-copy > p:last-child { font-size: 15px; }
+  .audit-entry-action .button { width: 100%; min-height: 52px; }
   .offer-heading .offer-price { grid-column: auto; margin-top: 62px; font-size: clamp(61px, 18vw, 90px); white-space: normal; }
   .offer-detail { grid-template-columns: 1fr; gap: 44px; margin-top: 62px; }
   .invitation { min-height: 78svh; padding-inline: 20px; }
   .invitation h2 { font-size: clamp(48px, 14vw, 72px); }
+  .invitation-actions { display: grid; }
+  .invitation-actions .button { width: 100%; margin-top: 10px; }
+  .messenger-links { gap: 12px; line-height: 1.5; }
   footer { flex-direction: column; padding: 22px 20px; line-height: 1.45; }
   .analysis-topbar { grid-template-columns: 1fr auto; min-height: 72px; padding-inline: 20px; }
   .analysis-back { display: none; }

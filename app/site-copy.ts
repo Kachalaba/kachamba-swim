@@ -13,6 +13,11 @@ export const copy = {
     cta: "Обговорити формат",
     analysisCta: "Розбір техніки за відео",
     analysisPrice: "₴2 490 · відповідь до 48 годин",
+    auditPanelLabel: "Менший перший крок",
+    auditPanelTitle: "Розбір без підписки. Конкретний фокус на наступне тренування.",
+    auditPanelText:
+      "Надішліть відео одного стилю й отримайте evidence-кадри, три пріоритети, практичні вправи та 20-хвилинний дзвінок із тренером.",
+    auditPanelFacts: ["₴2 490", "до 48 годин", "вартість зарахую у перший місяць ведення"],
     messengerPrompt: "Зручніше в месенджері?",
     telegram: "Telegram",
     whatsapp: "WhatsApp",
@@ -100,6 +105,11 @@ export const copy = {
     cta: "Discuss the fit",
     analysisCta: "Video technique audit",
     analysisPrice: "€59 · delivered within 48 hours",
+    auditPanelLabel: "A smaller first step",
+    auditPanelTitle: "A review without a subscription. A clear focus for your next session.",
+    auditPanelText:
+      "Send a video of one stroke and receive evidence frames, three priorities, practical drills and a 20-minute call with the coach.",
+    auditPanelFacts: ["€59", "within 48 hours", "credited toward your first month of coaching"],
     messengerPrompt: "Prefer a messenger?",
     telegram: "Telegram",
     whatsapp: "WhatsApp",

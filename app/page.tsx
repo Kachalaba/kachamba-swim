@@ -244,8 +244,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="offer scene" id="price" aria-labelledby="price-title">
+      <section className="audit-entry scene" aria-labelledby="audit-entry-title">
         <p className="scene-number" aria-hidden="true">05</p>
+        <div className="audit-entry-layout">
+          <Reveal className="audit-entry-copy">
+            <p className="eyebrow">{t.auditPanelLabel}</p>
+            <h2 id="audit-entry-title">{t.auditPanelTitle}</h2>
+            <p>{t.auditPanelText}</p>
+          </Reveal>
+          <Reveal className="audit-entry-action" delay={100}>
+            <div className="audit-entry-facts">
+              {t.auditPanelFacts.map((fact) => <p key={fact}>{fact}</p>)}
+            </div>
+            <a className="button button-light" href={analysisPath}>
+              {t.analysisCta}<span aria-hidden="true">→</span>
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="offer scene" id="price" aria-labelledby="price-title">
+        <p className="scene-number" aria-hidden="true">06</p>
         <Reveal className="offer-heading">
           <p className="eyebrow">{t.pricingLabel}</p>
           <h2 id="price-title">{t.pricingTitle}</h2>
@@ -264,9 +283,14 @@ export default function Home() {
           <p className="eyebrow">KACHALABA SWIM</p>
           <h2 id="invitation-title">{t.finalTitle}</h2>
           <p>{t.finalText}</p>
-          <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
-            {t.cta}<span aria-hidden="true">↗</span>
-          </a>
+          <div className="invitation-actions">
+            <a className="button button-light" href={instagramUrl} target="_blank" rel="noreferrer">
+              {t.cta}<span aria-hidden="true">↗</span>
+            </a>
+            <a className="button button-quiet" href={analysisPath}>
+              {t.analysisCta}<span aria-hidden="true">→</span>
+            </a>
+          </div>
           <div className="messenger-links" aria-label={t.messengerPrompt}>
             <span>{t.messengerPrompt}</span>
             <a href={telegramUrl} target="_blank" rel="noreferrer">{t.telegram}</a>
@@ -277,7 +301,7 @@ export default function Home() {
 
       <footer>
         <span>{t.footer}</span>
-        <a href={instagramUrl} target="_blank" rel="noreferrer">@kachamba_swim</a>
+        <a href={instagramUrl} target="_blank" rel="noreferrer">@kachalaba_swim</a>
       </footer>
     </main>
   );

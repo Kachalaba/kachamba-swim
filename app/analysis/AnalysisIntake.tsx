@@ -1,6 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { type Language } from "../site-copy";
 import { analysisCopy } from "./analysis-copy";
 import { buildAnalysisBrief, buildWhatsAppUrl, type AnalysisBriefInput } from "./intake.mjs";
@@ -54,10 +55,10 @@ export function AnalysisIntake({ telegramHref, whatsappHref }: Props) {
   return (
     <main className="analysis-shell" lang={language}>
       <header className="analysis-topbar">
-        <a className="wordmark" href="/" aria-label="Kachalaba Swim">
+        <Link className="wordmark" href="/" aria-label="Kachalaba Swim">
           KACHALABA<span>SWIM</span>
-        </a>
-        <a className="analysis-back" href="/">← {t.back}</a>
+        </Link>
+        <Link className="analysis-back" href="/">← {t.back}</Link>
         <div className="language-switch" role="group" aria-label={t.languageLabel}>
           {(["uk", "en"] as Language[]).map((item) => (
             <button key={item} type="button" aria-pressed={language === item} onClick={() => setLanguage(item)}>
@@ -193,14 +194,13 @@ export function AnalysisIntake({ telegramHref, whatsappHref }: Props) {
         <p className="eyebrow">{t.upgradeLabel}</p>
         <h2 id="upgrade-title">{t.upgradeTitle}</h2>
         <p>{t.upgradeText}</p>
-        <a className="button button-light" href="/#price">{t.upgradeCta}<span aria-hidden="true">→</span></a>
+        <Link className="button button-light" href="/#price">{t.upgradeCta}<span aria-hidden="true">→</span></Link>
       </section>
 
       <footer>
         <p>© 2026 Mykyta Kachalaba · Video Technique Audit</p>
-        <a href="/">kachalaba.coach</a>
+        <Link href="/">kachalaba.coach</Link>
       </footer>
     </main>
   );
 }
-
